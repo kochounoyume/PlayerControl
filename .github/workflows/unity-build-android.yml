@@ -52,6 +52,15 @@ jobs:
           restore-keys: |
             Library-
 
+      # Free up disk Space
+      - name: Free Disk Space for Android
+        run: |
+          sudo swapoff -a
+          sudo rm -f /swapfile
+          sudo apt clean
+          docker rmi $(docker images -q)
+          df -h
+
       # Unityプロジェクトのビルド
       # 設定しない場合、buildフォルダに出力される
       - name: Run the Android build
