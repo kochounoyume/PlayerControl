@@ -29,6 +29,16 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.film-internal-utilities": {
+      "version": "0.18.4-preview",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.uielements": "1.0.0",
+        "com.unity.timeline": "1.2.18"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.ide.rider": {
       "version": "3.0.28",
       "depth": 0,
@@ -121,6 +131,13 @@
         "com.unity.searcher": "4.9.2"
       }
     },
+    "com.unity.springbone": {
+      "version": "https://github.com/unity3d-jp/UnityChanSpringBone.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "9415071549aee47c094657d9ef5af239b96c201f"
+    },
     "com.unity.test-framework": {
       "version": "1.4.4",
       "depth": 0,
@@ -142,6 +159,18 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.timeline": {
+      "version": "1.8.6",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.director": "1.0.0",
+        "com.unity.modules.animation": "1.0.0",
+        "com.unity.modules.audio": "1.0.0",
+        "com.unity.modules.particlesystem": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.tiny.character.controller": {
       "version": "https://github.com/unity3d-jp/Project_TCC.git?path=Packages/com.utj.charactercontroller",
       "depth": 0,
@@ -152,6 +181,16 @@
         "com.unity.collections": "1.2.4"
       },
       "hash": "02e3eca89f9d3b956b9193676c56b72e52ede3d7"
+    },
+    "com.unity.toonshader": {
+      "version": "0.10.0-preview",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.film-internal-utilities": "0.18.4-preview",
+        "com.unity.render-pipelines.core": "10.0.0"
+      },
+      "url": "https://packages.unity.com"
     },
     "com.unity.ugui": {
       "version": "2.0.0",
