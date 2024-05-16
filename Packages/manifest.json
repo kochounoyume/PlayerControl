@@ -4,6 +4,7 @@
     "com.unity.inputsystem": "1.8.2",
     "com.unity.render-pipelines.universal": "17.0.3",
     "com.unity.test-framework": "1.4.4",
+    "com.unity.tiny.character.controller": "https://github.com/unity3d-jp/Project_TCC.git?path=Packages/com.utj.charactercontroller",
     "com.unity.ugui": "2.0.0",
     "com.unity.visualscripting": "1.9.4",
     "com.unity.modules.accessibility": "1.0.0",

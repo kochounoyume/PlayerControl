@@ -12,7 +12,7 @@
     },
     "com.unity.collections": {
       "version": "2.4.0",
-      "depth": 2,
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.burst": "1.8.12",
@@ -56,7 +56,7 @@
     },
     "com.unity.nuget.mono-cecil": {
       "version": "1.11.4",
-      "depth": 3,
+      "depth": 2,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -134,13 +134,24 @@
     },
     "com.unity.test-framework.performance": {
       "version": "3.0.3",
-      "depth": 3,
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "com.unity.test-framework": "1.1.31",
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.unity.tiny.character.controller": {
+      "version": "https://github.com/unity3d-jp/Project_TCC.git?path=Packages/com.utj.charactercontroller",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.burst": "1.8.10",
+        "com.unity.visualscripting": "1.9.1",
+        "com.unity.collections": "1.2.4"
+      },
+      "hash": "02e3eca89f9d3b956b9193676c56b72e52ede3d7"
     },
     "com.unity.ugui": {
       "version": "2.0.0",
