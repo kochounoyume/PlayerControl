@@ -3,7 +3,7 @@
     "com.unity.ide.rider": "3.0.28",
     "com.unity.inputsystem": "1.8.2",
     "com.unity.render-pipelines.universal": "17.0.3",
-    "com.unity.springbone": "https://github.com/unity3d-jp/UnityChanSpringBone.git",
+    "com.unity.springbone": "https://github.com/unity3d-jp/UnityChanSpringBone.git#1.2.1-preview",
     "com.unity.test-framework": "1.4.4",
     "com.unity.tiny.character.controller": "https://github.com/unity3d-jp/Project_TCC.git?path=Packages/com.utj.charactercontroller",
     "com.unity.toonshader": "0.10.0-preview",
