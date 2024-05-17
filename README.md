@@ -39,7 +39,7 @@ The official GameSynth' URL is below:
 ### 2-2. Unity-Chan!
 © Unity Technologies Japan/UCL
 
-### 2-3. source-han-sans
+### 2-3. [source-han-sans](https://github.com/adobe-fonts/source-han-sans)
 This font is licensed by Adobe and SIL OPEN FONT LICENSE v.1.1
 
 このフォントはAdobeからSIL OPEN FONT LICENSE v.1.1ライセンスで提供されています。
