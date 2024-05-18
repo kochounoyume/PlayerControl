@@ -53,13 +53,8 @@ jobs:
             Library-
 
       # Free up disk Space
-      - name: Free Disk Space for Android
-        run: |
-          sudo swapoff -a
-          sudo rm -f /swapfile
-          sudo apt clean
-          docker rmi $(docker images -q)
-          df -h
+      - name: Free disk space
+        run: .github/workflows/scripts/free_disk_space.sh
 
       # Unityプロジェクトのビルド
       # 設定しない場合、buildフォルダに出力される
