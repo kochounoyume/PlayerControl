@@ -54,9 +54,12 @@ jobs:
       
       # Free up disk Space
       - name: Free disk space
-        run:  |
-          chmod +x ./.github/workflows/scripts/free_disk_space.sh
-          .github/workflows/scripts/free_disk_space.sh
+        run: |
+          sudo swapoff -a
+          sudo rm -f /swapfile
+          sudo apt clean
+          docker rmi $(docker images -q)
+          df -h
 
       # Unityプロジェクトのビルド
       # 設定しない場合、buildフォルダに出力される
