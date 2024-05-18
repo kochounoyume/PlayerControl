@@ -52,6 +52,10 @@ jobs:
           restore-keys: |
             Library-
 
+      # Authorisation
+      - name: Authorisation Free disk space
+        run: git update-index --add --chmod=+x .github/workflows/scripts/free_disk_space.sh
+      
       # Free up disk Space
       - name: Free disk space
         run: .github/workflows/scripts/free_disk_space.sh
