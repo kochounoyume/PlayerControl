@@ -13,7 +13,7 @@ namespace PlayerControl
     [RequireComponent(typeof(MoveControl))]
     [RequireComponent(typeof(JumpControl))]
     [RequireComponent(typeof(GroundCheck))]
-    [RequireComponent(typeof(CursorPositionControl))]
+    [RequireComponent(typeof(TpsCameraControl))]
     public sealed class PlayerController : MonoBehaviour
     {
         [SerializeField]
@@ -32,7 +32,7 @@ namespace PlayerControl
         private GroundCheck groundCheck;
 
         [SerializeField]
-        private CursorPositionControl cursorPosControl;
+        private TpsCameraControl cameraControl;
 
         private readonly int speedAnim = Animator.StringToHash("Speed");
 
@@ -46,7 +46,6 @@ namespace PlayerControl
 
         private readonly int sideStepAnim = Animator.StringToHash("SideStep");
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Start()
         {
             playerInput.onActionTriggered += context =>
@@ -54,9 +53,7 @@ namespace PlayerControl
                 const string moveAction = "Move";
                 const string sprintAction = "Sprint";
                 const string jumpAction = "Jump";
-                const string mousePosAction = "MousePosition";
-
-                const int heightPriority = 10;
+                const string lookAction = "Look";
 
                 switch (context.action.name)
                 {
@@ -64,22 +61,18 @@ namespace PlayerControl
                         moveControl.Move(context.ReadValue<Vector2>());
                         break;
                     case sprintAction when context.phase is InputActionPhase.Performed:
-                        moveControl.TurnPriority = heightPriority;
                         const float sprintHoldSpeed = 4.0f;
                         moveControl.MoveSpeed = sprintHoldSpeed;
                         break;
                     case sprintAction when context.phase is InputActionPhase.Canceled:
-                        moveControl.TurnPriority = default;
-                        cursorPosControl.TurnPriority = default;
                         const float sprintReleasedSpeed = 1.2f;
                         moveControl.MoveSpeed = sprintReleasedSpeed;
                         break;
                     case jumpAction when context.phase is InputActionPhase.Started:
                         jumpControl.Jump();
                         break;
-                    case mousePosAction when context.phase is InputActionPhase.Performed:
-                        cursorPosControl.LookTargetPoint(context.ReadValue<Vector2>());
-                        cursorPosControl.TurnPriority = heightPriority;
+                    case lookAction when context.phase is InputActionPhase.Performed:
+                        cameraControl.RotateCamera(context.ReadValue<Vector2>());
                         break;
                 }
             };
