@@ -14,7 +14,7 @@ namespace PlayerControl
     [RequireComponent(typeof(JumpControl))]
     [RequireComponent(typeof(GroundCheck))]
     [RequireComponent(typeof(TpsCameraControl))]
-    public sealed class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour
     {
         [SerializeField]
         private Animator animator;
@@ -34,62 +34,80 @@ namespace PlayerControl
         [SerializeField]
         private TpsCameraControl cameraControl;
 
-        private readonly int speedAnim = Animator.StringToHash("Speed");
+        protected const string MoveAction = "Move";
 
-        private readonly int groundAnim = Animator.StringToHash("IsGround");
+        protected const string SprintAction = "Sprint";
 
-        private readonly int jumpStartAnim = Animator.StringToHash("JumpStart");
+        protected const string JumpAction = "Jump";
 
-        private readonly int doubleJumpAnim = Animator.StringToHash("DoubleJump");
+        protected const string LookAction = "Look";
 
-        private readonly int forwardAnim = Animator.StringToHash("Forward");
+        protected readonly int SpeedAnim = Animator.StringToHash("Speed");
 
-        private readonly int sideStepAnim = Animator.StringToHash("SideStep");
+        protected readonly int GroundAnim = Animator.StringToHash("IsGround");
 
-        private void Start()
+        protected readonly int JumpStartAnim = Animator.StringToHash("JumpStart");
+
+        protected readonly int DoubleJumpAnim = Animator.StringToHash("DoubleJump");
+
+        protected readonly int ForwardAnim = Animator.StringToHash("Forward");
+
+        protected readonly int SideStepAnim = Animator.StringToHash("SideStep");
+
+        protected ref readonly Animator Animator => ref animator;
+
+        protected ref readonly PlayerInput PlayerInput => ref playerInput;
+
+        protected ref readonly MoveControl MoveControl => ref moveControl;
+
+        protected ref readonly JumpControl JumpControl => ref jumpControl;
+
+        protected ref readonly GroundCheck GroundCheck => ref groundCheck;
+
+        protected ref readonly TpsCameraControl CameraControl => ref cameraControl;
+
+        protected virtual void Start()
         {
-            playerInput.onActionTriggered += context =>
-            {
-                const string moveAction = "Move";
-                const string sprintAction = "Sprint";
-                const string jumpAction = "Jump";
-                const string lookAction = "Look";
-
-                switch (context.action.name)
-                {
-                    case moveAction when context.phase is InputActionPhase.Performed or InputActionPhase.Canceled:
-                        moveControl.Move(context.ReadValue<Vector2>());
-                        break;
-                    case sprintAction when context.phase is InputActionPhase.Performed:
-                        const float sprintHoldSpeed = 4.0f;
-                        moveControl.MoveSpeed = sprintHoldSpeed;
-                        break;
-                    case sprintAction when context.phase is InputActionPhase.Canceled:
-                        const float sprintReleasedSpeed = 1.2f;
-                        moveControl.MoveSpeed = sprintReleasedSpeed;
-                        break;
-                    case jumpAction when context.phase is InputActionPhase.Started:
-                        jumpControl.Jump();
-                        break;
-                    case lookAction when context.phase is InputActionPhase.Performed:
-                        cameraControl.RotateCamera(context.ReadValue<Vector2>());
-                        break;
-                }
-            };
-
-            jumpControl.OnJump.AddListener(() => animator.Play(jumpControl.IsDoubleJump() ? doubleJumpAnim : jumpStartAnim));
+            PlayerInput.onActionTriggered += OnActionTriggered;
+            JumpControl.OnJump.AddListener(OnJump);
         }
 
-        private void Update()
+        protected virtual void Update()
         {
-            animator.SetFloat(speedAnim, moveControl.CurrentSpeed);
-            animator.SetBool(groundAnim, groundCheck.IsOnGround);
+            Animator.SetFloat(SpeedAnim, MoveControl.CurrentSpeed);
+            Animator.SetBool(GroundAnim, GroundCheck.IsOnGround);
 
-            Vector3 currentDirection = moveControl.LocalDirection;
+            Vector3 currentDirection = MoveControl.LocalDirection;
             const float dampTime = 0.1f;
             float deltaTime = Time.deltaTime;
-            animator.SetFloat(forwardAnim, currentDirection.z, dampTime, deltaTime);
-            animator.SetFloat(sideStepAnim, currentDirection.x, dampTime, deltaTime);
+            Animator.SetFloat(ForwardAnim, currentDirection.z, dampTime, deltaTime);
+            Animator.SetFloat(SideStepAnim, currentDirection.x, dampTime, deltaTime);
         }
+
+        protected virtual void OnActionTriggered(InputAction.CallbackContext context)
+        {
+            switch (context.action.name)
+            {
+                case MoveAction when context.phase is InputActionPhase.Performed or InputActionPhase.Canceled:
+                    MoveControl.Move(context.ReadValue<Vector2>());
+                    break;
+                case SprintAction when context.phase is InputActionPhase.Performed:
+                    const float sprintHoldSpeed = 4.0f;
+                    MoveControl.MoveSpeed = sprintHoldSpeed;
+                    break;
+                case SprintAction when context.phase is InputActionPhase.Canceled:
+                    const float sprintReleasedSpeed = 1.2f;
+                    MoveControl.MoveSpeed = sprintReleasedSpeed;
+                    break;
+                case JumpAction when context.phase is InputActionPhase.Started:
+                    JumpControl.Jump();
+                    break;
+                case LookAction when context.phase is InputActionPhase.Performed:
+                    CameraControl.RotateCamera(context.ReadValue<Vector2>());
+                    break;
+            }
+        }
+
+        protected virtual void OnJump() => Animator.Play(JumpControl.IsDoubleJump() ? DoubleJumpAnim : JumpStartAnim);
     }
 }
