@@ -68,7 +68,7 @@ namespace PlayerControl
 
         protected virtual void Start()
         {
-            PlayerInput.onActionTriggered += OnActionTriggered;
+            PlayerInput.onActionTriggered += context => OnActionTriggered(context);
             JumpControl.OnJump.AddListener(OnJump);
         }
 
@@ -84,26 +84,26 @@ namespace PlayerControl
             Animator.SetFloat(SideStepAnim, currentDirection.x, dampTime, deltaTime);
         }
 
-        protected virtual void OnActionTriggered(InputAction.CallbackContext context)
+        protected virtual void OnActionTriggered(CallbackContext context)
         {
-            switch (context.action.name)
+            switch (context.ActionName)
             {
-                case MoveAction when context.phase is InputActionPhase.Performed or InputActionPhase.Canceled:
-                    MoveControl.Move(context.ReadValue<Vector2>());
+                case MoveAction when context.Phase is InputActionPhase.Performed or InputActionPhase.Canceled:
+                    MoveControl.Move(context.Value);
                     break;
-                case SprintAction when context.phase is InputActionPhase.Performed:
+                case SprintAction when context.Phase is InputActionPhase.Performed:
                     const float sprintHoldSpeed = 4.0f;
                     MoveControl.MoveSpeed = sprintHoldSpeed;
                     break;
-                case SprintAction when context.phase is InputActionPhase.Canceled:
+                case SprintAction when context.Phase is InputActionPhase.Canceled:
                     const float sprintReleasedSpeed = 1.2f;
                     MoveControl.MoveSpeed = sprintReleasedSpeed;
                     break;
-                case JumpAction when context.phase is InputActionPhase.Started:
+                case JumpAction when context.Phase is InputActionPhase.Started:
                     JumpControl.Jump();
                     break;
-                case LookAction when context.phase is InputActionPhase.Performed:
-                    CameraControl.RotateCamera(context.ReadValue<Vector2>());
+                case LookAction when context.Phase is InputActionPhase.Performed:
+                    CameraControl.RotateCamera(context.Value);
                     break;
             }
         }
