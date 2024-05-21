@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace PlayerControl
 {
-    public readonly struct CallbackContext
+    public readonly ref struct CallbackContext
     {
         public readonly string ActionName;
 
