@@ -10,7 +10,7 @@ namespace PlayerControl.Mobile
         private MinimumVirtualJoyStick joystick = null;
 
         [SerializeField]
-        private Button sprintButton = null;
+        private MinimumHoldButton sprintButton = null;
 
         [SerializeField]
         private Button jumpButton = null;
@@ -22,6 +22,16 @@ namespace PlayerControl.Mobile
             {
                 const InputActionPhase phase = InputActionPhase.Performed;
                 base.OnActionTriggered(new CallbackContext(MoveAction, phase, value));
+            };
+            sprintButton.OnStart += () =>
+            {
+                const InputActionPhase phase = InputActionPhase.Performed;
+                base.OnActionTriggered(new CallbackContext(SprintAction, phase));
+            };
+            sprintButton.OnRelease += () =>
+            {
+                const InputActionPhase phase = InputActionPhase.Canceled;
+                base.OnActionTriggered(new CallbackContext(SprintAction, phase));
             };
             jumpButton.onClick.AddListener(() =>
             {
