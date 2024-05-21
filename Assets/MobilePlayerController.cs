@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace PlayerControl.Mobile
 {
@@ -7,6 +8,12 @@ namespace PlayerControl.Mobile
     {
         [SerializeField]
         private MinimumVirtualJoyStick joystick = null;
+
+        [SerializeField]
+        private Button sprintButton = null;
+
+        [SerializeField]
+        private Button jumpButton = null;
 
         protected override void Start()
         {
@@ -16,6 +23,11 @@ namespace PlayerControl.Mobile
                 const InputActionPhase phase = InputActionPhase.Performed;
                 base.OnActionTriggered(new CallbackContext(MoveAction, phase, value));
             };
+            jumpButton.onClick.AddListener(() =>
+            {
+                const InputActionPhase phase = InputActionPhase.Started;
+                base.OnActionTriggered(new CallbackContext(JumpAction, phase));
+            });
         }
 
         protected override void OnActionTriggered(CallbackContext context)
