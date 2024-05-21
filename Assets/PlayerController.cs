@@ -1,6 +1,7 @@
 using Unity.TinyCharacterController.Check;
 using Unity.TinyCharacterController.Control;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace PlayerControl
@@ -34,6 +35,8 @@ namespace PlayerControl
         [SerializeField]
         private TpsCameraControl cameraControl;
 
+        private EventSystem eventSystem;
+
         protected const string MoveAction = "Move";
 
         protected const string SprintAction = "Sprint";
@@ -66,8 +69,11 @@ namespace PlayerControl
 
         protected ref readonly TpsCameraControl CameraControl => ref cameraControl;
 
+        protected ref readonly EventSystem EventSystem => ref eventSystem;
+
         protected virtual void Start()
         {
+            eventSystem = EventSystem.current;
             PlayerInput.onActionTriggered += context => OnActionTriggered(context);
             JumpControl.OnJump.AddListener(OnJump);
         }
@@ -103,7 +109,11 @@ namespace PlayerControl
                     JumpControl.Jump();
                     break;
                 case LookAction when context.Phase is InputActionPhase.Performed:
-                    CameraControl.RotateCamera(context.Value);
+                    // Prevent looking around when the player is interacting with UI.
+                    if (!eventSystem.IsPointerOverGameObject())
+                    {
+                        CameraControl.RotateCamera(context.Value);
+                    }
                     break;
             }
         }

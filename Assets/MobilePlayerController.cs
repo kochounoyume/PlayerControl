@@ -14,8 +14,17 @@ namespace PlayerControl.Mobile
             joystick.OnValueChanged += value =>
             {
                 const InputActionPhase phase = InputActionPhase.Performed;
-                OnActionTriggered(new CallbackContext(MoveAction, phase, value));
+                base.OnActionTriggered(new CallbackContext(MoveAction, phase, value));
             };
+        }
+
+        protected override void OnActionTriggered(CallbackContext context)
+        {
+            if (context.ActionName == LookAction && joystick.isUsing)
+            {
+                return;
+            }
+            base.OnActionTriggered(context);
         }
     }
 }

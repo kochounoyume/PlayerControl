@@ -20,6 +20,11 @@ namespace PlayerControl
         private Vector2 mPointerDownPos;
 
         /// <summary>
+        /// Whether the control is currently being used.
+        /// </summary>
+        public bool isUsing { get; private set; } = false;
+
+        /// <summary>
         /// Callback executed when the value of the control changes.
         /// </summary>
         public event Action<Vector2> OnValueChanged;
@@ -36,6 +41,8 @@ namespace PlayerControl
             {
                 throw new ArgumentNullException(nameof(eventData));
             }
+
+            isUsing = true;
 
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 background, eventData.position, eventData.pressEventCamera, out mPointerDownPos);
@@ -62,6 +69,7 @@ namespace PlayerControl
         {
             handle.anchoredPosition = mPointerDownPos = mStartPos;
             OnValueChanged?.Invoke(Vector2.zero);
+            isUsing = false;
         }
 
         private void Start() => mStartPos = handle.anchoredPosition;
