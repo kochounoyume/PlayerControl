@@ -12,7 +12,7 @@ If you are using Unity 2019.1 or later, you can use Package Manager to install a
 Package Manager から git 経由でインストールしてください。
 
 ```
-https://github.com/kochounoyume/PlayerControl.gitpath=Packages/PlayerControl
+https://github.com/kochounoyume/PlayerControl.git?path=Packages/PlayerControl
 ```
 
 > [!NOTE]
