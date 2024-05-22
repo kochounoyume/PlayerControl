@@ -13,6 +13,11 @@ Package Manager から git 経由でインストールしてください。
 
 // Todo: git install url
 
+> [!NOTE]
+> There are many dependent packages in this repository, as listed in the next section, but TCC is the only one among them on which the package to be installed depends.
+> 
+> なお、本リポジトリには次節で列挙するように多くの依存パッケージがありますが、インストールするパッケージが依存するものはそのうち  [TCC_Project](https://github.com/unity3d-jp/Project_TCC) だけです。
+
 ## 2. License
 The repository is provided under the MIT licence, but the packages used internally are subject to their respective licences.
 
