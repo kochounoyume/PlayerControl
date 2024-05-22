@@ -11,7 +11,9 @@ If you are using Unity 2019.1 or later, you can use Package Manager to install a
 
 Package Manager から git 経由でインストールしてください。
 
-// Todo: git install url
+```
+https://github.com/kochounoyume/PlayerControl.gitpath=Packages/PlayerControl
+```
 
 > [!NOTE]
 > There are many dependent packages in this repository, as listed in the next section, but TCC is the only one among them on which the package to be installed depends.
