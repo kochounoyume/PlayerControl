@@ -1,19 +1,22 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace PlayerControl
 {
     public readonly ref struct CallbackContext
     {
-        public readonly string ActionName;
+        private readonly ReadOnlySpan<char> actionName;
 
         public readonly InputActionPhase Phase;
 
         public readonly Vector2 Value;
 
-        public CallbackContext(string actionName, InputActionPhase phase, Vector2 value = default)
+        public string ActionName => actionName.ToString();
+
+        public CallbackContext(ReadOnlySpan<char> actionName, InputActionPhase phase, Vector2 value = default)
         {
-            ActionName = actionName;
+            this.actionName = actionName;
             Phase = phase;
             Value = value;
         }
