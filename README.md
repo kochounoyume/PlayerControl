@@ -16,9 +16,9 @@ https://github.com/kochounoyume/PlayerControl.git?path=Packages/PlayerControl
 ```
 
 > [!NOTE]
-> There are many dependent packages in this repository, as listed in the next section, but TCC is the only one among them on which the package to be installed depends.
+> The repository has a number of dependent packages, as listed in the next section, but only [TCC_Project](https://github.com/unity3d-jp/Project_TCC)  and [InputSystem](https://github.com/Unity-Technologies/InputSystem) are among those on which the packages to be installed depend.
 > 
-> なお、本リポジトリには次節で列挙するように多くの依存パッケージがありますが、インストールするパッケージが依存するものはそのうち  [TCC_Project](https://github.com/unity3d-jp/Project_TCC) だけです。
+> なお、本リポジトリには次節で列挙するように多くの依存パッケージがありますが、インストールするパッケージが依存するものはそのうち  [TCC_Project](https://github.com/unity3d-jp/Project_TCC) と [InputSystem](https://github.com/Unity-Technologies/InputSystem) だけです。
 
 ## 2. License
 The repository is provided under the MIT licence, but the packages used internally are subject to their respective licences.
