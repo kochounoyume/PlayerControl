@@ -1,0 +1,8 @@
+{
+  "name": "jp.kochounoyume.playercontrol",
+  "displayName": "PlayerControl",
+  "version": "1.0.0",
+  "unity": "2022.3",
+  "author": "kochounoyume",
+  "description": "Mobile-ready Unity player operation."
+}
