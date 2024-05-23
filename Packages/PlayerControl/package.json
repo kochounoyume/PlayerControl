@@ -4,5 +4,17 @@
   "version": "1.0.0",
   "unity": "2022.3",
   "author": "kochounoyume",
-  "description": "Mobile-ready Unity player operation."
+  "description": "Mobile-ready Unity player operation.",
+  "samples":[
+    {
+      "displayName": "Template with UI",
+      "description": "This is a sample that uses the UI.",
+      "path": "Samples/Template_with_UI"
+    },
+    {
+      "displayName": "Template without UI",
+      "description": "This is a sample that does not use the UI.",
+      "path": "Samples/Template_without_UI"
+    }
+  ]
 }
