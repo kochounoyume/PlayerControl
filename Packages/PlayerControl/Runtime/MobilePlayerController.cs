@@ -2,7 +2,7 @@
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace PlayerControl.Mobile
+namespace PlayerControl
 {
     public class MobilePlayerController : PlayerController
     {
@@ -42,7 +42,7 @@ namespace PlayerControl.Mobile
 
         protected override void OnActionTriggered(CallbackContext context)
         {
-            if (context.ActionName == LookAction && joystick.isUsing)
+            if (context.CompareActionName(LookAction) && joystick.isUsing)
             {
                 return;
             }

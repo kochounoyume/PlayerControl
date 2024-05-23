@@ -14,6 +14,13 @@ namespace PlayerControl
 
         public string ActionName => actionName.ToString();
 
+        /// <summary>
+        /// Compares the action name with the given string.
+        /// </summary>
+        /// <param name="other">target string</param>
+        /// <returns>True if the action name is equal to the target string.</returns>
+        public bool CompareActionName(ReadOnlySpan<char> other) => actionName.SequenceEqual(other);
+
         public CallbackContext(ReadOnlySpan<char> actionName, InputActionPhase phase, Vector2 value = default)
         {
             this.actionName = actionName;
