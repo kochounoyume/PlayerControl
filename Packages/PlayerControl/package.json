@@ -9,12 +9,12 @@
     {
       "displayName": "Template with UI",
       "description": "This is a sample that uses the UI.",
-      "path": "Samples/Template_with_UI"
+      "path": "Samples~/Template_with_UI"
     },
     {
       "displayName": "Template without UI",
       "description": "This is a sample that does not use the UI.",
-      "path": "Samples/Template_without_UI"
+      "path": "Samples~/Template_without_UI"
     }
   ]
 }
