@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.TinyCharacterController.Check;
 using Unity.TinyCharacterController.Control;
 using UnityEngine;
@@ -37,6 +38,8 @@ namespace PlayerControl
 
         private EventSystem eventSystem;
 
+        private PointerEventData pointerEventData;
+
         protected const string MoveAction = "Move";
 
         protected const string SprintAction = "Sprint";
@@ -44,6 +47,8 @@ namespace PlayerControl
         protected const string JumpAction = "Jump";
 
         protected const string LookAction = "Look";
+
+        private readonly List<RaycastResult> raycastResults = new List<RaycastResult>();
 
         protected readonly int SpeedAnim = Animator.StringToHash("Speed");
 
@@ -110,7 +115,7 @@ namespace PlayerControl
                     break;
                 case LookAction when context.Phase is InputActionPhase.Performed:
                     // Prevent looking around when the player is interacting with UI.
-                    if (!eventSystem.IsPointerOverGameObject())
+                    if (!IsPointerHittingUI())
                     {
                         CameraControl.RotateCamera(context.Value);
                     }
@@ -119,5 +124,19 @@ namespace PlayerControl
         }
 
         protected virtual void OnJump() => Animator.Play(JumpControl.IsDoubleJump() ? DoubleJumpAnim : JumpStartAnim);
+
+        /// <summary>
+        /// Check if the pointer is hitting UI.
+        /// </summary>
+        /// <returns>True if the pointer is hitting UI.</returns>
+        protected bool IsPointerHittingUI()
+        {
+            Pointer device = playerInput.GetDevice<Pointer>();
+            if (device == null) return false;
+            pointerEventData ??= new PointerEventData(eventSystem);
+            pointerEventData.position = device.position.ReadValue();
+            eventSystem.RaycastAll(pointerEventData, raycastResults);
+            return raycastResults.Count > 0;
+        }
     }
 }
