@@ -19,7 +19,7 @@ namespace PlayerControl
         /// </summary>
         /// <param name="other">target string</param>
         /// <returns>True if the action name is equal to the target string.</returns>
-        public bool CompareActionName(ReadOnlySpan<char> other) => actionName.SequenceEqual(other);
+        public bool CompareActionName(in ReadOnlySpan<char> other) => actionName.SequenceEqual(other);
 
         public CallbackContext(ReadOnlySpan<char> actionName, InputActionPhase phase, Vector2 value = default)
         {

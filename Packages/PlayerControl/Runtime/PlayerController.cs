@@ -90,7 +90,7 @@ namespace PlayerControl
             Animator.SetFloat(SideStepAnim, currentDirection.x, dampTime, deltaTime);
         }
 
-        protected virtual void OnActionTriggered(CallbackContext context)
+        protected virtual void OnActionTriggered(in CallbackContext context)
         {
             switch (context.ActionName)
             {
