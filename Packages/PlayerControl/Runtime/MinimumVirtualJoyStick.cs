@@ -16,8 +16,8 @@ namespace PlayerControl
         [SerializeField]
         private RectTransform background;
 
-        private Vector3 mStartPos;
-        private Vector2 mPointerDownPos;
+        private Vector3 startPos;
+        private Vector2 pointerDownPos;
 
         /// <summary>
         /// Whether the control is currently being used.
@@ -45,7 +45,7 @@ namespace PlayerControl
             isUsing = true;
 
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                background, eventData.position, eventData.pressEventCamera, out mPointerDownPos);
+                background, eventData.position, eventData.pressEventCamera, out pointerDownPos);
         }
 
         /// <inheritdoc />
@@ -59,19 +59,19 @@ namespace PlayerControl
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 background, eventData.position, eventData.pressEventCamera, out Vector2 position);
 
-            Vector2 delta = Vector2.ClampMagnitude(position - mPointerDownPos, MovementRange);
-            handle.anchoredPosition = (Vector2)mStartPos + delta;
+            Vector2 delta = Vector2.ClampMagnitude(position - pointerDownPos, MovementRange);
+            handle.anchoredPosition = (Vector2)startPos + delta;
             OnValueChanged?.Invoke(delta / MovementRange);
         }
 
         /// <inheritdoc />
         void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
         {
-            handle.anchoredPosition = mPointerDownPos = mStartPos;
+            handle.anchoredPosition = pointerDownPos = startPos;
             OnValueChanged?.Invoke(Vector2.zero);
             isUsing = false;
         }
 
-        private void Start() => mStartPos = handle.anchoredPosition;
+        private void Start() => startPos = handle.anchoredPosition;
     }
 }
