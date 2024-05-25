@@ -22,7 +22,7 @@ namespace PlayerControl
         /// <summary>
         /// Whether the control is currently being used.
         /// </summary>
-        public bool isUsing { get; private set; } = false;
+        public bool IsUsing { get; private set; } = false;
 
         /// <summary>
         /// Callback executed when the value of the control changes.
@@ -42,7 +42,7 @@ namespace PlayerControl
                 throw new ArgumentNullException(nameof(eventData));
             }
 
-            isUsing = true;
+            IsUsing = true;
 
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 background, eventData.position, eventData.pressEventCamera, out pointerDownPos);
@@ -69,7 +69,7 @@ namespace PlayerControl
         {
             handle.anchoredPosition = pointerDownPos = startPos;
             OnValueChanged?.Invoke(Vector2.zero);
-            isUsing = false;
+            IsUsing = false;
         }
 
         private void Start() => startPos = handle.anchoredPosition;

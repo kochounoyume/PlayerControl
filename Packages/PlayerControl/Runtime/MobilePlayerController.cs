@@ -42,7 +42,7 @@ namespace PlayerControl
 
         protected override void OnActionTriggered(in CallbackContext context)
         {
-            if (context.CompareActionName(LookAction) && joystick.isUsing)
+            if (context.CompareActionName(LookAction) && joystick.IsUsing)
             {
                 return;
             }
