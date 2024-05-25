@@ -16,13 +16,11 @@ namespace PlayerControl
         [SerializeField]
         private RectTransform background;
 
-        private Vector3 startPos;
-        private Vector2 pointerDownPos;
+        private Vector2 startScreenPos;
+        private Vector2 handleScreenPos;
 
-        /// <summary>
-        /// Whether the control is currently being used.
-        /// </summary>
-        public bool isUsing { get; private set; } = false;
+        private Vector2 startPos;
+        private Vector2 pointerDownPos;
 
         /// <summary>
         /// Callback executed when the value of the control changes.
@@ -34,6 +32,11 @@ namespace PlayerControl
         /// </summary>
         public ref float MovementRange => ref movementRange;
 
+        /// <summary>
+        /// The current screen position of the control's handle.
+        /// </summary>
+        public ref readonly Vector2 HandleScreenPos => ref handleScreenPos;
+
         /// <inheritdoc />
         void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
         {
@@ -42,10 +45,10 @@ namespace PlayerControl
                 throw new ArgumentNullException(nameof(eventData));
             }
 
-            isUsing = true;
+            handleScreenPos = eventData.position;
 
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                background, eventData.position, eventData.pressEventCamera, out pointerDownPos);
+                background, handleScreenPos, eventData.pressEventCamera, out pointerDownPos);
         }
 
         /// <inheritdoc />
@@ -56,11 +59,13 @@ namespace PlayerControl
                 throw new ArgumentNullException(nameof(eventData));
             }
 
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                background, eventData.position, eventData.pressEventCamera, out Vector2 position);
+            handleScreenPos = eventData.position;
 
-            Vector2 delta = Vector2.ClampMagnitude(position - pointerDownPos, MovementRange);
-            handle.anchoredPosition = (Vector2)startPos + delta;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                background, handleScreenPos, eventData.pressEventCamera, out Vector2 localPos);
+
+            Vector2 delta = Vector2.ClampMagnitude(localPos - pointerDownPos, MovementRange);
+            handle.anchoredPosition = startPos + delta;
             OnValueChanged?.Invoke(delta / MovementRange);
         }
 
@@ -68,10 +73,16 @@ namespace PlayerControl
         void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
         {
             handle.anchoredPosition = pointerDownPos = startPos;
+            handleScreenPos = startScreenPos;
             OnValueChanged?.Invoke(Vector2.zero);
-            isUsing = false;
         }
 
-        private void Start() => startPos = handle.anchoredPosition;
+        private void Awake()
+        {
+            startPos = handle.anchoredPosition;
+            Canvas canvas = GetComponentInParent<Canvas>();
+            Camera pressEventCamera = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
+            startScreenPos = handleScreenPos = RectTransformUtility.WorldToScreenPoint(pressEventCamera, handle.position);
+        }
     }
 }
