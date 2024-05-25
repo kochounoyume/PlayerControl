@@ -1,11 +1,13 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 namespace PlayerControl
 {
     [RequireComponent(typeof(RectTransform))]
-    public class MinimumVirtualJoyStick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
+    public class MinimumVirtualJoyStick : MonoBehaviour, IPointerDownHandler
     {
         [SerializeField, Min(0)]
         private float movementRange = 50;
@@ -18,6 +20,12 @@ namespace PlayerControl
 
         private Vector3 startPos;
         private Vector2 pointerDownPos;
+        private Camera pressEventCamera;
+
+        /// <summary>
+        /// The ID of the touch that is currently using the control.
+        /// </summary>
+        public int TouchId { get; private set; }
 
         /// <summary>
         /// Whether the control is currently being used.
@@ -43,35 +51,61 @@ namespace PlayerControl
             }
 
             IsUsing = true;
+            pressEventCamera = eventData.pressEventCamera;
 
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                background, eventData.position, eventData.pressEventCamera, out pointerDownPos);
-        }
+            float minDistance = float.MaxValue;
+            Vector2 screenPoint = eventData.position;
 
-        /// <inheritdoc />
-        void IDragHandler.OnDrag(PointerEventData eventData)
-        {
-            if (eventData == null)
+            foreach (Touch touch in Touch.activeTouches)
             {
-                throw new ArgumentNullException(nameof(eventData));
+                Vector2 touchPos = touch.screenPosition;
+                float distance = Vector2.Distance(touchPos, eventData.position);
+
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    screenPoint = touchPos;
+                    TouchId = touch.touchId;
+                }
             }
 
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                background, eventData.position, eventData.pressEventCamera, out Vector2 position);
+                background, screenPoint, pressEventCamera, out pointerDownPos);
 
-            Vector2 delta = Vector2.ClampMagnitude(position - pointerDownPos, MovementRange);
-            handle.anchoredPosition = (Vector2)startPos + delta;
-            OnValueChanged?.Invoke(delta / MovementRange);
-        }
+            Touch.onFingerMove += OnFingerMove;
 
-        /// <inheritdoc />
-        void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
-        {
-            handle.anchoredPosition = pointerDownPos = startPos;
-            OnValueChanged?.Invoke(Vector2.zero);
-            IsUsing = false;
+            Touch.onFingerUp += OnFingerUp;
+
+            void OnFingerMove(Finger finger)
+            {
+                if (finger.currentTouch.touchId == TouchId)
+                {
+                    RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                        background, finger.screenPosition, pressEventCamera, out Vector2 position);
+
+                    Vector2 delta = Vector2.ClampMagnitude(position - pointerDownPos, MovementRange);
+                    handle.anchoredPosition = (Vector2)startPos + delta;
+                    OnValueChanged?.Invoke(delta / MovementRange);
+                }
+            }
+
+            void OnFingerUp(Finger finger)
+            {
+                if (finger.currentTouch.touchId == TouchId)
+                {
+                    handle.anchoredPosition = pointerDownPos = startPos;
+                    OnValueChanged?.Invoke(Vector2.zero);
+                    IsUsing = false;
+                    Touch.onFingerMove -= OnFingerMove;
+                    Touch.onFingerUp -= OnFingerUp;
+                }
+            }
         }
 
         private void Start() => startPos = handle.anchoredPosition;
+
+        private void OnEnable() => EnhancedTouchSupport.Enable();
+
+        private void OnDisable() => EnhancedTouchSupport.Disable();
     }
 }
