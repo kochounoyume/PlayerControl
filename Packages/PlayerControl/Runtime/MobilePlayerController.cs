@@ -21,23 +21,32 @@ namespace PlayerControl
             joystick.OnValueChanged += value =>
             {
                 const InputActionPhase phase = InputActionPhase.Performed;
-                OnActionTriggered(new CallbackContext(MoveAction, phase, value));
+                base.OnActionTriggered(new CallbackContext(MoveAction, phase, value));
             };
             sprintButton.OnStart += () =>
             {
                 const InputActionPhase phase = InputActionPhase.Performed;
-                OnActionTriggered(new CallbackContext(SprintAction, phase));
+                base.OnActionTriggered(new CallbackContext(SprintAction, phase));
             };
             sprintButton.OnRelease += () =>
             {
                 const InputActionPhase phase = InputActionPhase.Canceled;
-                OnActionTriggered(new CallbackContext(SprintAction, phase));
+                base.OnActionTriggered(new CallbackContext(SprintAction, phase));
             };
             jumpButton.onClick.AddListener(() =>
             {
                 const InputActionPhase phase = InputActionPhase.Started;
-                OnActionTriggered(new CallbackContext(JumpAction, phase));
+                base.OnActionTriggered(new CallbackContext(JumpAction, phase));
             });
+        }
+
+        protected override void OnActionTriggered(in CallbackContext context)
+        {
+            if (context.CompareActionName(LookAction) && joystick.isUsing)
+            {
+                return;
+            }
+            base.OnActionTriggered(context);
         }
     }
 }
