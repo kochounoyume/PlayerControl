@@ -1,0 +1,78 @@
+name: Run the Android Build Upload
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+  push:
+    branches:
+    - main
+    paths:
+    - Assets/**
+    - Packages/**
+    - ProjectSettings/**
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    name: Run the Android Build Upload
+    runs-on: ubuntu-latest
+    steps:
+      # リポジトリのチェックアウト
+      - name: Check out my unity project.
+        uses: actions/checkout@v4.1.5
+      - name: Create LFS file list
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+
+      # LFSファイルのキャッシュを取得する
+      - name: Restore LFS cache
+        uses: actions/cache@v4.0.2
+        id: lfs-cache
+        with:
+          path: .git/lfs
+          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+
+      # LFSファイルをPullする
+      - name: Git LFS Pull
+        run: |
+          git lfs pull
+          git add .
+          git reset --hard
+
+      # ファイル名にgitのハッシュを含めたいので$GITHUB_OUTPUTに保存しておく
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      # Cache
+      - uses: actions/cache@v4.0.2
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+      
+      # Free up disk Space
+      - name: Free disk space
+        run:  |
+          chmod +x ./.github/workflows/scripts/free_disk_space.sh
+          .github/workflows/scripts/free_disk_space.sh
+          git checkout -- ./.github/workflows/scripts/free_disk_space.sh
+
+      # Unityプロジェクトのビルド
+      # 設定しない場合、buildフォルダに出力される
+      - name: Run the Android Build
+        uses: game-ci/unity-builder@v4.2.3
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          targetPlatform: Android
+          unityVersion: 6000.0.1f1
+
+      - name: Upload the Android Build
+        uses: actions/upload-artifact@master
+        with: 
+          name: Build-${{ steps.vars.outputs.sha_short }}
+          path: build
