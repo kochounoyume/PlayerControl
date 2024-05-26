@@ -113,12 +113,8 @@ namespace PlayerControl
                 case JumpAction when context.Phase is InputActionPhase.Started:
                     JumpControl.Jump();
                     break;
-                case LookAction when context.Phase is InputActionPhase.Performed:
-                    // Prevent looking around when the player is interacting with UI.
-                    if (!IsPointerHittingUI())
-                    {
-                        CameraControl.RotateCamera(context.Value);
-                    }
+                case LookAction when context.Phase is InputActionPhase.Performed && !IsPointerHittingUI():
+                    CameraControl.RotateCamera(context.Value);
                     break;
             }
         }
