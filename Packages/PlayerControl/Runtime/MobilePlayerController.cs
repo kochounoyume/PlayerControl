@@ -102,7 +102,6 @@ namespace PlayerControl
             {
                 delta = processor.Process(delta, null);
             }
-            Debug.Log(delta);
             base.OnActionTriggered(new CallbackContext(LookAction, InputActionPhase.Performed, delta));
         }
 
