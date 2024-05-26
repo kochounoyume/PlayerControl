@@ -113,7 +113,7 @@ namespace PlayerControl
                 case JumpAction when context.Phase is InputActionPhase.Started:
                     JumpControl.Jump();
                     break;
-                case LookAction when context.Phase is InputActionPhase.Performed && !IsPointerHittingUI():
+                case LookAction when context.Phase is InputActionPhase.Performed:
                     CameraControl.RotateCamera(context.Value);
                     break;
             }

@@ -53,20 +53,11 @@ namespace PlayerControl
             IsUsing = true;
             pressEventCamera = eventData.pressEventCamera;
 
-            float minDistance = float.MaxValue;
             Vector2 screenPoint = eventData.position;
-
-            foreach (Touch touch in Touch.activeTouches)
+            if (TouchUtility.TryGetApproximatelyActiveTouch(screenPoint, out Touch touch))
             {
-                Vector2 touchPos = touch.screenPosition;
-                float distance = Vector2.Distance(touchPos, eventData.position);
-
-                if (distance < minDistance)
-                {
-                    minDistance = distance;
-                    screenPoint = touchPos;
-                    TouchId = touch.touchId;
-                }
+                screenPoint = touch.screenPosition;
+                TouchId = touch.touchId;
             }
 
             RectTransformUtility.ScreenPointToLocalPointInRectangle(

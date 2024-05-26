@@ -517,6 +517,10 @@ MonoBehaviour:
   joystick: {fileID: 1086657423}
   sprintButton: {fileID: 873054113}
   jumpButton: {fileID: 914281459}
+  invertX: 0
+  invertY: 1
+  scaleX: 15
+  scaleY: 15
 --- !u!1 &614508399
 GameObject:
   m_ObjectHideFlags: 0
