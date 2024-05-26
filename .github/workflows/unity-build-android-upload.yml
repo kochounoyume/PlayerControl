@@ -1,16 +1,5 @@
 name: Run the Android Build Upload
 on:
-  pull_request:
-    types:
-      - opened
-      - synchronize
-  push:
-    branches:
-    - main
-    paths:
-    - Assets/**
-    - Packages/**
-    - ProjectSettings/**
   workflow_dispatch: {}
 
 jobs:
