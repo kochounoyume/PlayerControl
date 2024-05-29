@@ -71,14 +71,13 @@ namespace PlayerControl
         {
             base.Update();
             var activeTouches = Touch.activeTouches;
-            ReadOnlySpan<int> avoidTouchIds
-                = (joystick.IsUsing, sprintButton.IsUsing) switch
-                {
-                    (true, true) => stackalloc int[] { joystick.TouchId, sprintButton.TouchId },
-                    (true, false) => stackalloc int[] { joystick.TouchId },
-                    (false, true) => stackalloc int[] { sprintButton.TouchId },
-                    _ => Array.Empty<int>()
-                };
+            ReadOnlySpan<int> avoidTouchIds = (joystick.IsUsing, sprintButton.IsUsing) switch
+            {
+                (true, true) => stackalloc int[] { joystick.TouchId, sprintButton.TouchId },
+                (true, false) => stackalloc int[] { joystick.TouchId },
+                (false, true) => stackalloc int[] { sprintButton.TouchId },
+                _ => ReadOnlySpan<int>.Empty
+            };
             if (activeTouches.Count <= avoidTouchIds.Length) return;
             Touch activeTouch = default;
             foreach (Touch touch in activeTouches)
