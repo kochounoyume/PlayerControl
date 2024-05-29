@@ -1,0 +1,27 @@
+name: Create Unity Package
+
+on:
+  workflow_dispatch:
+
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4.1.2
+    # create meta file
+    - run: |
+        echo -e "fileFormatVersion: 2\nguid: 4374ac3819d9c494aaf255a82e464727\nfolderAsset: yes\nDefaultImporter:\n  externalObjects: {}\n  userData: \n  assetBundleName: \n  assetBundleVariant: " > Packages/PlayerControl.meta
+    - run: |
+        echo "Packages/PlayerControl.meta" > metaList
+        find Packages/PlayerControl/ -name \*.meta >> metaList
+
+    - run: mkdir a
+
+    - uses: pCYSl5EDgo/create-unitypackage@master
+      with:
+        package-path: "a/output.unitypackage"
+        include-files: metaList
+    - uses: actions/upload-artifact@master
+      with:
+        path: a
+        name: package
