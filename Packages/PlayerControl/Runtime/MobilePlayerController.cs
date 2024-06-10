@@ -38,6 +38,11 @@ namespace PlayerControl
         [Tooltip("Scale factor to multiply the incoming Vector2's Y component by.")]
         private float scaleY = 15.0f;
 
+        [Header("Debug Options")]
+        [SerializeField]
+        [Tooltip("If true, the look action will be triggered when the mouse changes direction.")]
+        private bool isDebug = false;
+
         protected virtual void OnEnable() => EnhancedTouchSupport.Enable();
 
         protected virtual void OnDisable() => EnhancedTouchSupport.Disable();
@@ -106,7 +111,7 @@ namespace PlayerControl
 
         protected override void OnActionTriggered(in CallbackContext context)
         {
-            if (context.CompareActionName(LookAction))
+            if (context.CompareActionName(LookAction) && !isDebug)
             {
                 return;
             }
