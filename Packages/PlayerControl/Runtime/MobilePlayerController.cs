@@ -113,14 +113,15 @@ namespace PlayerControl
         {
             if (context.CompareActionName(LookAction))
             {
-                return;
-            }
 #if UNITY_EDITOR
-            if (!isDebug)
-            {
+                if (!isDebug)
+                {
+                    return;
+                }
+#else
                 return;
-            }
 #endif
+            }
             base.OnActionTriggered(context);
         }
     }
