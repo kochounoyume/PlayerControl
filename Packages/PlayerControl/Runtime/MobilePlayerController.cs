@@ -111,10 +111,16 @@ namespace PlayerControl
 
         protected override void OnActionTriggered(in CallbackContext context)
         {
-            if (context.CompareActionName(LookAction) && !isDebug)
+            if (context.CompareActionName(LookAction))
             {
                 return;
             }
+#if UNITY_EDITOR
+            if (!isDebug)
+            {
+                return;
+            }
+#endif
             base.OnActionTriggered(context);
         }
     }
