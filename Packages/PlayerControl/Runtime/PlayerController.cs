@@ -48,7 +48,7 @@ namespace PlayerControl
 
         protected const string LookAction = "Look";
 
-        private readonly List<RaycastResult> raycastResults = new List<RaycastResult>();
+        protected const float MoveDampTime = 0.1f;
 
         protected readonly int SpeedAnim = Animator.StringToHash("Speed");
 
@@ -89,10 +89,9 @@ namespace PlayerControl
             Animator.SetBool(GroundAnim, GroundCheck.IsOnGround);
 
             Vector3 currentDirection = MoveControl.LocalDirection;
-            const float dampTime = 0.1f;
             float deltaTime = Time.deltaTime;
-            Animator.SetFloat(ForwardAnim, currentDirection.z, dampTime, deltaTime);
-            Animator.SetFloat(SideStepAnim, currentDirection.x, dampTime, deltaTime);
+            Animator.SetFloat(ForwardAnim, currentDirection.z, MoveDampTime, deltaTime);
+            Animator.SetFloat(SideStepAnim, currentDirection.x, MoveDampTime, deltaTime);
         }
 
         protected virtual void OnActionTriggered(in CallbackContext context)
@@ -131,8 +130,9 @@ namespace PlayerControl
             if (device == null) return false;
             pointerEventData ??= new PointerEventData(eventSystem);
             pointerEventData.position = device.position.ReadValue();
-            eventSystem.RaycastAll(pointerEventData, raycastResults);
-            return raycastResults.Count > 0;
+            List<RaycastResult> results = new List<RaycastResult>();
+            eventSystem.RaycastAll(pointerEventData, results);
+            return results.Count > 0;
         }
     }
 }
