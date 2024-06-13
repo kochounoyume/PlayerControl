@@ -40,28 +40,6 @@ namespace PlayerControl
 
         private PointerEventData pointerEventData;
 
-        protected const string MoveAction = "Move";
-
-        protected const string SprintAction = "Sprint";
-
-        protected const string JumpAction = "Jump";
-
-        protected const string LookAction = "Look";
-
-        protected const float MoveDampTime = 0.1f;
-
-        protected readonly int SpeedAnim = Animator.StringToHash("Speed");
-
-        protected readonly int GroundAnim = Animator.StringToHash("IsGround");
-
-        protected readonly int JumpStartAnim = Animator.StringToHash("JumpStart");
-
-        protected readonly int DoubleJumpAnim = Animator.StringToHash("DoubleJump");
-
-        protected readonly int ForwardAnim = Animator.StringToHash("Forward");
-
-        protected readonly int SideStepAnim = Animator.StringToHash("SideStep");
-
         protected ref readonly Animator Animator => ref animator;
 
         protected ref readonly PlayerInput PlayerInput => ref playerInput;
@@ -75,6 +53,61 @@ namespace PlayerControl
         protected ref readonly TpsCameraControl CameraControl => ref cameraControl;
 
         protected ref readonly EventSystem EventSystem => ref eventSystem;
+
+        /// <summary>
+        /// "Move" action name.
+        /// </summary>
+        public const string MoveAction = "Move";
+
+        /// <summary>
+        /// "Sprint" action name.
+        /// </summary>
+        public const string SprintAction = "Sprint";
+
+        /// <summary>
+        /// "Jump" action name.
+        /// </summary>
+        public const string JumpAction = "Jump";
+
+        /// <summary>
+        /// "Look" action name.
+        /// </summary>
+        public const string LookAction = "Look";
+
+        /// <summary>
+        /// The damper time for the move animation.
+        /// </summary>
+        public const float MoveDampTime = 0.1f;
+
+        /// <summary>
+        /// "Speed" animation hash.
+        /// </summary>
+        public readonly int SpeedAnim = Animator.StringToHash("Speed");
+
+        /// <summary>
+        /// "IsGround" animation hash.
+        /// </summary>
+        public readonly int GroundAnim = Animator.StringToHash("IsGround");
+
+        /// <summary>
+        /// "JumpStart" animation hash.
+        /// </summary>
+        public readonly int JumpStartAnim = Animator.StringToHash("JumpStart");
+
+        /// <summary>
+        /// "DoubleJump" animation hash.
+        /// </summary>
+        public readonly int DoubleJumpAnim = Animator.StringToHash("DoubleJump");
+
+        /// <summary>
+        /// "Forward" animation hash.
+        /// </summary>
+        public readonly int ForwardAnim = Animator.StringToHash("Forward");
+
+        /// <summary>
+        /// "SideStep" animation hash.
+        /// </summary>
+        public readonly int SideStepAnim = Animator.StringToHash("SideStep");
 
         protected virtual void Start()
         {
