@@ -54,6 +54,8 @@ namespace PlayerControl
 
         protected ref readonly EventSystem EventSystem => ref eventSystem;
 
+        protected bool IsDoubleJump => JumpControl.AerialJumpCount >= 1;
+
         /// <summary>
         /// "Move" action name.
         /// </summary>
@@ -151,7 +153,7 @@ namespace PlayerControl
             }
         }
 
-        protected virtual void OnJump() => Animator.Play(JumpControl.IsDoubleJump() ? DoubleJumpAnim : JumpStartAnim);
+        protected virtual void OnJump() => Animator.Play(IsDoubleJump ? DoubleJumpAnim : JumpStartAnim);
 
         /// <summary>
         /// Check if the pointer is hitting UI.
