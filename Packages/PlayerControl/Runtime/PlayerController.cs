@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.TinyCharacterController.Check;
 using Unity.TinyCharacterController.Control;
 using UnityEngine;
@@ -54,7 +55,29 @@ namespace PlayerControl
 
         protected ref readonly EventSystem EventSystem => ref eventSystem;
 
-        protected bool IsDoubleJump => JumpControl.AerialJumpCount >= 1;
+        protected bool IsDoubleJump
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => JumpControl.AerialJumpCount >= 1;
+        }
+
+        protected float CurrentSpeed
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => MoveControl.CurrentSpeed;
+        }
+
+        protected bool IsOnGround
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => GroundCheck.IsOnGround;
+        }
+
+        protected Vector3 LocalDirection
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => MoveControl.LocalDirection;
+        }
 
         /// <summary>
         /// "Move" action name.
@@ -120,10 +143,10 @@ namespace PlayerControl
 
         protected virtual void Update()
         {
-            Animator.SetFloat(SpeedAnim, MoveControl.CurrentSpeed);
-            Animator.SetBool(GroundAnim, GroundCheck.IsOnGround);
+            Animator.SetFloat(SpeedAnim, CurrentSpeed);
+            Animator.SetBool(GroundAnim, IsOnGround);
 
-            Vector3 currentDirection = MoveControl.LocalDirection;
+            Vector3 currentDirection = LocalDirection;
             float deltaTime = Time.deltaTime;
             Animator.SetFloat(ForwardAnim, currentDirection.z, MoveDampTime, deltaTime);
             Animator.SetFloat(SideStepAnim, currentDirection.x, MoveDampTime, deltaTime);
