@@ -10,7 +10,7 @@ namespace PlayerControl
     public class MobilePlayerController : PlayerController
     {
         [SerializeField]
-        private MobileControlUIView uiView;
+        protected MobileControlUIView uiView; // It is assumed that values are dynamically overwritten at the inheritance point.
 
         [Header("Processors")]
         [Header("Invert Vector2")]
