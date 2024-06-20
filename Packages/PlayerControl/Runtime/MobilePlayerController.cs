@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.InputSystem.Processors;
-using UnityEngine.UI;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 namespace PlayerControl
@@ -11,13 +10,7 @@ namespace PlayerControl
     public class MobilePlayerController : PlayerController
     {
         [SerializeField]
-        private MinimumVirtualJoyStick joystick = null;
-
-        [SerializeField]
-        private MinimumHoldButton sprintButton = null;
-
-        [SerializeField]
-        private Button jumpButton = null;
+        private MobileControlUIView uiView;
 
         [Header("Processors")]
         [Header("Invert Vector2")]
@@ -50,22 +43,22 @@ namespace PlayerControl
         protected override void Start()
         {
             base.Start();
-            joystick.OnValueChanged += value =>
+            uiView.Joystick.OnValueChanged += value =>
             {
                 const InputActionPhase phase = InputActionPhase.Performed;
                 base.OnActionTriggered(new CallbackContext(MoveAction, phase, value));
             };
-            sprintButton.OnStart += () =>
+            uiView.SprintButton.OnStart += () =>
             {
                 const InputActionPhase phase = InputActionPhase.Performed;
                 base.OnActionTriggered(new CallbackContext(SprintAction, phase));
             };
-            sprintButton.OnRelease += () =>
+            uiView.SprintButton.OnRelease += () =>
             {
                 const InputActionPhase phase = InputActionPhase.Canceled;
                 base.OnActionTriggered(new CallbackContext(SprintAction, phase));
             };
-            jumpButton.onClick.AddListener(() =>
+            uiView.JumpButton.onClick.AddListener(() =>
             {
                 const InputActionPhase phase = InputActionPhase.Started;
                 base.OnActionTriggered(new CallbackContext(JumpAction, phase));
@@ -76,11 +69,11 @@ namespace PlayerControl
         {
             base.Update();
             var activeTouches = Touch.activeTouches;
-            ReadOnlySpan<int> avoidTouchIds = (joystick.IsUsing, sprintButton.IsUsing) switch
+            ReadOnlySpan<int> avoidTouchIds = (uiView.Joystick.IsUsing, uiView.SprintButton.IsUsing) switch
             {
-                (true, true) => stackalloc int[] { joystick.TouchId, sprintButton.TouchId },
-                (true, false) => stackalloc int[] { joystick.TouchId },
-                (false, true) => stackalloc int[] { sprintButton.TouchId },
+                (true, true) => stackalloc int[] { uiView.Joystick.TouchId, uiView.SprintButton.TouchId },
+                (true, false) => stackalloc int[] { uiView.Joystick.TouchId },
+                (false, true) => stackalloc int[] { uiView.SprintButton.TouchId },
                 _ => ReadOnlySpan<int>.Empty
             };
             if (activeTouches.Count <= avoidTouchIds.Length) return;

@@ -129,6 +129,7 @@ GameObject:
   - component: {fileID: 2365178947801223037}
   - component: {fileID: 9146902868827730716}
   - component: {fileID: 6193520166958348130}
+  - component: {fileID: 8750094401094680615}
   m_Layer: 5
   m_Name: Canvas PlayerControl
   m_TagString: Untagged
@@ -221,6 +222,21 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8750094401094680615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514606596682259922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4a4271a3b5149c58f5bfd5fab941f35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joystick: {fileID: 2244854046444035947}
+  sprintButton: {fileID: 7040649207024350490}
+  jumpButton: {fileID: 7523883143943009698}
 --- !u!1 &5575305212701958197
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,3 +459,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5186278656706622795, guid: 479822af41ae03f4482b3eb9e4ff7e50, type: 3}
   m_PrefabInstance: {fileID: 5485790804048688161}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2244854046444035947 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5982508150384241482, guid: 479822af41ae03f4482b3eb9e4ff7e50, type: 3}
+  m_PrefabInstance: {fileID: 5485790804048688161}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7382736e2fb4982bd569168a6c2913e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
