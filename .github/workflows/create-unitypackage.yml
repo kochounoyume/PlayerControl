@@ -10,7 +10,7 @@ jobs:
     - uses: actions/checkout@v4.1.2
     # create meta file
     - run: |
-        echo -e "fileFormatVersion: 2\nguid: 4374ac3819d9c494aaf255a82e464727\nfolderAsset: yes\nDefaultImporter:\n  externalObjects: {}\n  userData: \n  assetBundleName: \n  assetBundleVariant: " > Packages/PlayerControl.meta
+        echo -e "fileFormatVersion: 2\nguid: 16a665d207a04c75a22401108719a8d3\nfolderAsset: yes\nDefaultImporter:\n  externalObjects: {}\n  userData: \n  assetBundleName: \n  assetBundleVariant: " > Packages/PlayerControl.meta
     - run: |
         echo "Packages/PlayerControl.meta" > metaList
         find Packages/PlayerControl/ -name \*.meta >> metaList
