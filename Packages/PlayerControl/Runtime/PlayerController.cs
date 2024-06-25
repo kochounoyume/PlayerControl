@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.TinyCharacterController.Check;
 using Unity.TinyCharacterController.Control;
+using Unity.TinyCharacterController.Interfaces.Core;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -13,6 +14,7 @@ namespace PlayerControl
     /// </summary>
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(PlayerInput))]
+    [RequireComponent(typeof(ITransform))]
     [RequireComponent(typeof(MoveControl))]
     [RequireComponent(typeof(JumpControl))]
     [RequireComponent(typeof(GroundCheck))]
@@ -37,6 +39,8 @@ namespace PlayerControl
         [SerializeField]
         private TpsCameraControl cameraControl;
 
+        private new ITransform transform;
+
         private EventSystem eventSystem;
 
         private PointerEventData pointerEventData;
@@ -52,6 +56,8 @@ namespace PlayerControl
         protected ref readonly GroundCheck GroundCheck => ref groundCheck;
 
         protected ref readonly TpsCameraControl CameraControl => ref cameraControl;
+
+        protected ref readonly ITransform Transform => ref transform;
 
         protected ref readonly EventSystem EventSystem => ref eventSystem;
 
@@ -77,6 +83,22 @@ namespace PlayerControl
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => MoveControl.LocalDirection;
+        }
+
+        protected Vector3 WorldPosition
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Transform.Position;
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            set => Transform.Position = value;
+        }
+
+        protected Quaternion WorldRotation
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Transform.Rotation;
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            set => Transform.Rotation = value;
         }
 
         /// <summary>
@@ -136,6 +158,7 @@ namespace PlayerControl
 
         protected virtual void Start()
         {
+            transform = GetComponent<ITransform>();
             eventSystem = EventSystem.current;
             PlayerInput.onActionTriggered += context => OnActionTriggered(context);
             JumpControl.OnJump.AddListener(OnJump);
