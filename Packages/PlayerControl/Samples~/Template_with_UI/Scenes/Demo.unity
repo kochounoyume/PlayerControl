@@ -784,7 +784,7 @@ MonoBehaviour:
   invertY: 1
   scaleX: 15
   scaleY: 15
-  isDebug: 0
+  isDebug: 1
 --- !u!1001 &1078153791
 PrefabInstance:
   m_ObjectHideFlags: 0
