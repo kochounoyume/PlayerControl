@@ -43,6 +43,8 @@ namespace PlayerControl
 
         private EventSystem eventSystem;
 
+        private AnimHashConstant constant;
+
         private PointerEventData pointerEventData;
 
         protected ref readonly Animator Animator => ref animator;
@@ -60,6 +62,35 @@ namespace PlayerControl
         protected ref readonly ITransform Transform => ref transform;
 
         protected ref readonly EventSystem EventSystem => ref eventSystem;
+
+        /// <summary>
+        /// "Speed" animation hash.
+        /// </summary>
+        protected ref readonly int SpeedAnim => ref constant.SpeedAnim;
+        /// <summary>
+        /// "IsGround" animation hash.
+        /// </summary>
+        protected ref readonly int GroundAnim => ref constant.GroundAnim;
+
+        /// <summary>
+        /// "JumpStart" animation hash.
+        /// </summary>
+        protected ref readonly int JumpStartAnim => ref constant.JumpStartAnim;
+
+        /// <summary>
+        /// "DoubleJump" animation hash.
+        /// </summary>
+        protected ref readonly int DoubleJumpAnim => ref constant.DoubleJumpAnim;
+
+        /// <summary>
+        /// "Forward" animation hash.
+        /// </summary>
+        protected ref readonly int ForwardAnim => ref constant.ForwardAnim;
+
+        /// <summary>
+        /// "SideStep" animation hash.
+        /// </summary>
+        protected ref readonly int SideStepAnim => ref constant.SideStepAnim;
 
         protected bool IsDoubleJump
         {
@@ -126,40 +157,11 @@ namespace PlayerControl
         /// </summary>
         public const float MoveDampTime = 0.1f;
 
-        /// <summary>
-        /// "Speed" animation hash.
-        /// </summary>
-        public readonly int SpeedAnim = Animator.StringToHash("Speed");
-
-        /// <summary>
-        /// "IsGround" animation hash.
-        /// </summary>
-        public readonly int GroundAnim = Animator.StringToHash("IsGround");
-
-        /// <summary>
-        /// "JumpStart" animation hash.
-        /// </summary>
-        public readonly int JumpStartAnim = Animator.StringToHash("JumpStart");
-
-        /// <summary>
-        /// "DoubleJump" animation hash.
-        /// </summary>
-        public readonly int DoubleJumpAnim = Animator.StringToHash("DoubleJump");
-
-        /// <summary>
-        /// "Forward" animation hash.
-        /// </summary>
-        public readonly int ForwardAnim = Animator.StringToHash("Forward");
-
-        /// <summary>
-        /// "SideStep" animation hash.
-        /// </summary>
-        public readonly int SideStepAnim = Animator.StringToHash("SideStep");
-
         protected virtual void Start()
         {
             transform = GetComponent<ITransform>();
             eventSystem = EventSystem.current;
+            constant = new AnimHashConstant(this);
             PlayerInput.onActionTriggered += context => OnActionTriggered(context);
             JumpControl.OnJump.AddListener(OnJump);
         }
