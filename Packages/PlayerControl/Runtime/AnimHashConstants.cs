@@ -5,40 +5,40 @@ namespace PlayerControl
     /// <summary>
     /// Animation hash constant.
     /// </summary>
-    internal sealed class AnimHashConstant
+    public sealed class AnimHashConstants
     {
         /// <summary>
         /// "Speed" animation hash.
         /// </summary>
-        internal readonly int SpeedAnim = Animator.StringToHash("Speed");
+        public readonly int SpeedAnim = Animator.StringToHash("Speed");
 
         /// <summary>
         /// "IsGround" animation hash.
         /// </summary>
-        internal readonly int GroundAnim = Animator.StringToHash("IsGround");
+        public readonly int GroundAnim = Animator.StringToHash("IsGround");
 
         /// <summary>
         /// "JumpStart" animation hash.
         /// </summary>
-        internal readonly int JumpStartAnim = Animator.StringToHash("JumpStart");
+        public readonly int JumpStartAnim = Animator.StringToHash("JumpStart");
 
         /// <summary>
         /// "DoubleJump" animation hash.
         /// </summary>
-        internal readonly int DoubleJumpAnim = Animator.StringToHash("DoubleJump");
+        public readonly int DoubleJumpAnim = Animator.StringToHash("DoubleJump");
 
         /// <summary>
         /// "Forward" animation hash.
         /// </summary>
-        internal readonly int ForwardAnim = Animator.StringToHash("Forward");
+        public readonly int ForwardAnim = Animator.StringToHash("Forward");
 
         /// <summary>
         /// "SideStep" animation hash.
         /// </summary>
-        internal readonly int SideStepAnim = Animator.StringToHash("SideStep");
+        public readonly int SideStepAnim = Animator.StringToHash("SideStep");
 
         // Ensure that this class is not generated before Awake.
-        internal AnimHashConstant(in Object obj)
+        public AnimHashConstants(in Object obj)
         {
         }
     }

@@ -43,7 +43,7 @@ namespace PlayerControl
 
         private EventSystem eventSystem;
 
-        private AnimHashConstant constant;
+        private AnimHashConstants constants;
 
         private PointerEventData pointerEventData;
 
@@ -63,34 +63,7 @@ namespace PlayerControl
 
         protected ref readonly EventSystem EventSystem => ref eventSystem;
 
-        /// <summary>
-        /// "Speed" animation hash.
-        /// </summary>
-        protected ref readonly int SpeedAnim => ref constant.SpeedAnim;
-        /// <summary>
-        /// "IsGround" animation hash.
-        /// </summary>
-        protected ref readonly int GroundAnim => ref constant.GroundAnim;
-
-        /// <summary>
-        /// "JumpStart" animation hash.
-        /// </summary>
-        protected ref readonly int JumpStartAnim => ref constant.JumpStartAnim;
-
-        /// <summary>
-        /// "DoubleJump" animation hash.
-        /// </summary>
-        protected ref readonly int DoubleJumpAnim => ref constant.DoubleJumpAnim;
-
-        /// <summary>
-        /// "Forward" animation hash.
-        /// </summary>
-        protected ref readonly int ForwardAnim => ref constant.ForwardAnim;
-
-        /// <summary>
-        /// "SideStep" animation hash.
-        /// </summary>
-        protected ref readonly int SideStepAnim => ref constant.SideStepAnim;
+        protected ref readonly AnimHashConstants Constants => ref constants;
 
         protected bool IsDoubleJump
         {
@@ -161,20 +134,20 @@ namespace PlayerControl
         {
             transform = GetComponent<ITransform>();
             eventSystem = EventSystem.current;
-            constant = new AnimHashConstant(this);
+            constants = new AnimHashConstants(this);
             PlayerInput.onActionTriggered += context => OnActionTriggered(context);
             JumpControl.OnJump.AddListener(OnJump);
         }
 
         protected virtual void Update()
         {
-            Animator.SetFloat(SpeedAnim, CurrentSpeed);
-            Animator.SetBool(GroundAnim, IsOnGround);
+            Animator.SetFloat(constants.SpeedAnim, CurrentSpeed);
+            Animator.SetBool(constants.GroundAnim, IsOnGround);
 
             Vector3 currentDirection = LocalDirection;
             float deltaTime = Time.deltaTime;
-            Animator.SetFloat(ForwardAnim, currentDirection.z, MoveDampTime, deltaTime);
-            Animator.SetFloat(SideStepAnim, currentDirection.x, MoveDampTime, deltaTime);
+            Animator.SetFloat(constants.ForwardAnim, currentDirection.z, MoveDampTime, deltaTime);
+            Animator.SetFloat(constants.SideStepAnim, currentDirection.x, MoveDampTime, deltaTime);
         }
 
         protected virtual void OnActionTriggered(in CallbackContext context)
@@ -201,7 +174,7 @@ namespace PlayerControl
             }
         }
 
-        protected virtual void OnJump() => Animator.Play(IsDoubleJump ? DoubleJumpAnim : JumpStartAnim);
+        protected virtual void OnJump() => Animator.Play(IsDoubleJump ? constants.DoubleJumpAnim : constants.JumpStartAnim);
 
         /// <summary>
         /// Check if the pointer is hitting UI.
