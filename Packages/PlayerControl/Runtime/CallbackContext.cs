@@ -1,29 +1,26 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace PlayerControl
 {
     public readonly ref struct CallbackContext
     {
-        private readonly ReadOnlySpan<char> actionName;
-
         public readonly InputActionPhase Phase;
 
         public readonly Vector2 Value;
 
-        public string ActionName => actionName.ToString();
+        public readonly string ActionName;
 
         /// <summary>
         /// Compares the action name with the given string.
         /// </summary>
         /// <param name="other">target string</param>
         /// <returns>True if the action name is equal to the target string.</returns>
-        public bool CompareActionName(in ReadOnlySpan<char> other) => actionName.SequenceEqual(other);
+        public bool CompareActionName(in string other) => ActionName == other;
 
-        public CallbackContext(in ReadOnlySpan<char> actionName, in InputActionPhase phase, Vector2 value = default)
+        public CallbackContext(in string actionName, in InputActionPhase phase, Vector2 value = default)
         {
-            this.actionName = actionName;
+            ActionName = actionName;
             Phase = phase;
             Value = value;
         }
