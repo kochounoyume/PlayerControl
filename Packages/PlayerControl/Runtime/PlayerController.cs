@@ -43,6 +43,8 @@ namespace PlayerControl
 
         private EventSystem eventSystem;
 
+        private AnimHashConstants constants;
+
         private PointerEventData pointerEventData;
 
         protected ref readonly Animator Animator => ref animator;
@@ -60,6 +62,8 @@ namespace PlayerControl
         protected ref readonly ITransform Transform => ref transform;
 
         protected ref readonly EventSystem EventSystem => ref eventSystem;
+
+        protected ref readonly AnimHashConstants Constants => ref constants;
 
         protected bool IsDoubleJump
         {
@@ -126,53 +130,24 @@ namespace PlayerControl
         /// </summary>
         public const float MoveDampTime = 0.1f;
 
-        /// <summary>
-        /// "Speed" animation hash.
-        /// </summary>
-        public readonly int SpeedAnim = Animator.StringToHash("Speed");
-
-        /// <summary>
-        /// "IsGround" animation hash.
-        /// </summary>
-        public readonly int GroundAnim = Animator.StringToHash("IsGround");
-
-        /// <summary>
-        /// "JumpStart" animation hash.
-        /// </summary>
-        public readonly int JumpStartAnim = Animator.StringToHash("JumpStart");
-
-        /// <summary>
-        /// "DoubleJump" animation hash.
-        /// </summary>
-        public readonly int DoubleJumpAnim = Animator.StringToHash("DoubleJump");
-
-        /// <summary>
-        /// "Forward" animation hash.
-        /// </summary>
-        public readonly int ForwardAnim = Animator.StringToHash("Forward");
-
-        /// <summary>
-        /// "SideStep" animation hash.
-        /// </summary>
-        public readonly int SideStepAnim = Animator.StringToHash("SideStep");
-
         protected virtual void Start()
         {
             transform = GetComponent<ITransform>();
             eventSystem = EventSystem.current;
+            constants = new AnimHashConstants(this);
             PlayerInput.onActionTriggered += context => OnActionTriggered(context);
             JumpControl.OnJump.AddListener(OnJump);
         }
 
         protected virtual void Update()
         {
-            Animator.SetFloat(SpeedAnim, CurrentSpeed);
-            Animator.SetBool(GroundAnim, IsOnGround);
+            Animator.SetFloat(constants.SpeedAnim, CurrentSpeed);
+            Animator.SetBool(constants.GroundAnim, IsOnGround);
 
             Vector3 currentDirection = LocalDirection;
             float deltaTime = Time.deltaTime;
-            Animator.SetFloat(ForwardAnim, currentDirection.z, MoveDampTime, deltaTime);
-            Animator.SetFloat(SideStepAnim, currentDirection.x, MoveDampTime, deltaTime);
+            Animator.SetFloat(constants.ForwardAnim, currentDirection.z, MoveDampTime, deltaTime);
+            Animator.SetFloat(constants.SideStepAnim, currentDirection.x, MoveDampTime, deltaTime);
         }
 
         protected virtual void OnActionTriggered(in CallbackContext context)
@@ -199,7 +174,7 @@ namespace PlayerControl
             }
         }
 
-        protected virtual void OnJump() => Animator.Play(IsDoubleJump ? DoubleJumpAnim : JumpStartAnim);
+        protected virtual void OnJump() => Animator.Play(IsDoubleJump ? constants.DoubleJumpAnim : constants.JumpStartAnim);
 
         /// <summary>
         /// Check if the pointer is hitting UI.
