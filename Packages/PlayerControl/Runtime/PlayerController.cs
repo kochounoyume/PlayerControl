@@ -41,8 +41,6 @@ namespace PlayerControl
 
         private new ITransform transform;
 
-        private EventSystem eventSystem;
-
         private AnimHashConstants constants;
 
         private PointerEventData pointerEventData;
@@ -60,8 +58,6 @@ namespace PlayerControl
         protected ref readonly TpsCameraControl CameraControl => ref cameraControl;
 
         protected ref readonly ITransform Transform => ref transform;
-
-        protected ref readonly EventSystem EventSystem => ref eventSystem;
 
         protected ref readonly AnimHashConstants Constants => ref constants;
 
@@ -108,22 +104,22 @@ namespace PlayerControl
         /// <summary>
         /// "Move" action name.
         /// </summary>
-        public const string MoveAction = "Move";
+        public const string Move = nameof(Move);
 
         /// <summary>
         /// "Sprint" action name.
         /// </summary>
-        public const string SprintAction = "Sprint";
+        public const string Sprint = nameof(Sprint);
 
         /// <summary>
         /// "Jump" action name.
         /// </summary>
-        public const string JumpAction = "Jump";
+        public const string Jump = nameof(Jump);
 
         /// <summary>
         /// "Look" action name.
         /// </summary>
-        public const string LookAction = "Look";
+        public const string Look = nameof(Look);
 
         /// <summary>
         /// The damper time for the move animation.
@@ -133,7 +129,6 @@ namespace PlayerControl
         protected virtual void Start()
         {
             transform = GetComponent<ITransform>();
-            eventSystem = EventSystem.current;
             constants = new AnimHashConstants(this);
             PlayerInput.onActionTriggered += context => OnActionTriggered(context);
             JumpControl.OnJump.AddListener(OnJump);
@@ -141,40 +136,40 @@ namespace PlayerControl
 
         protected virtual void Update()
         {
-            Animator.SetFloat(constants.SpeedAnim, CurrentSpeed);
-            Animator.SetBool(constants.GroundAnim, IsOnGround);
+            Animator.SetFloat(constants.Speed, CurrentSpeed);
+            Animator.SetBool(constants.IsGround, IsOnGround);
 
             Vector3 currentDirection = LocalDirection;
             float deltaTime = Time.deltaTime;
-            Animator.SetFloat(constants.ForwardAnim, currentDirection.z, MoveDampTime, deltaTime);
-            Animator.SetFloat(constants.SideStepAnim, currentDirection.x, MoveDampTime, deltaTime);
+            Animator.SetFloat(constants.Forward, currentDirection.z, MoveDampTime, deltaTime);
+            Animator.SetFloat(constants.SideStep, currentDirection.x, MoveDampTime, deltaTime);
         }
 
         protected virtual void OnActionTriggered(in CallbackContext context)
         {
             switch (context.ActionName)
             {
-                case MoveAction when context.Phase is InputActionPhase.Performed or InputActionPhase.Canceled:
+                case Move when context.Phase is InputActionPhase.Performed or InputActionPhase.Canceled:
                     MoveControl.Move(context.Value);
                     break;
-                case SprintAction when context.Phase is InputActionPhase.Performed:
+                case Sprint when context.Phase is InputActionPhase.Performed:
                     const float sprintHoldSpeed = 4.0f;
                     MoveControl.MoveSpeed = sprintHoldSpeed;
                     break;
-                case SprintAction when context.Phase is InputActionPhase.Canceled:
+                case Sprint when context.Phase is InputActionPhase.Canceled:
                     const float sprintReleasedSpeed = 1.2f;
                     MoveControl.MoveSpeed = sprintReleasedSpeed;
                     break;
-                case JumpAction when context.Phase is InputActionPhase.Started:
+                case Jump when context.Phase is InputActionPhase.Started:
                     JumpControl.Jump();
                     break;
-                case LookAction when context.Phase is InputActionPhase.Performed:
+                case Look when context.Phase is InputActionPhase.Performed:
                     CameraControl.RotateCamera(context.Value);
                     break;
             }
         }
 
-        protected virtual void OnJump() => Animator.Play(IsDoubleJump ? constants.DoubleJumpAnim : constants.JumpStartAnim);
+        protected virtual void OnJump() => Animator.Play(IsDoubleJump ? constants.DoubleJump : constants.JumpStart);
 
         /// <summary>
         /// Check if the pointer is hitting UI.
@@ -184,6 +179,7 @@ namespace PlayerControl
         {
             Pointer device = playerInput.GetDevice<Pointer>();
             if (device == null) return false;
+            EventSystem eventSystem = EventSystem.current;
             pointerEventData ??= new PointerEventData(eventSystem);
             pointerEventData.position = device.position.ReadValue();
             List<RaycastResult> results = new List<RaycastResult>();

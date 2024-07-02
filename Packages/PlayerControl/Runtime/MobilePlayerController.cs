@@ -46,22 +46,22 @@ namespace PlayerControl
             uiView.Joystick.OnValueChanged += value =>
             {
                 const InputActionPhase phase = InputActionPhase.Performed;
-                base.OnActionTriggered(new CallbackContext(MoveAction, phase, value));
+                base.OnActionTriggered(new CallbackContext(Move, phase, value));
             };
             uiView.SprintButton.OnStart += () =>
             {
                 const InputActionPhase phase = InputActionPhase.Performed;
-                base.OnActionTriggered(new CallbackContext(SprintAction, phase));
+                base.OnActionTriggered(new CallbackContext(Sprint, phase));
             };
             uiView.SprintButton.OnRelease += () =>
             {
                 const InputActionPhase phase = InputActionPhase.Canceled;
-                base.OnActionTriggered(new CallbackContext(SprintAction, phase));
+                base.OnActionTriggered(new CallbackContext(Sprint, phase));
             };
             uiView.JumpButton.onClick.AddListener(() =>
             {
                 const InputActionPhase phase = InputActionPhase.Started;
-                base.OnActionTriggered(new CallbackContext(JumpAction, phase));
+                base.OnActionTriggered(new CallbackContext(Jump, phase));
             });
         }
 
@@ -99,12 +99,12 @@ namespace PlayerControl
             {
                 delta = processor.Process(delta, null);
             }
-            base.OnActionTriggered(new CallbackContext(LookAction, InputActionPhase.Performed, delta));
+            base.OnActionTriggered(new CallbackContext(Look, InputActionPhase.Performed, delta));
         }
 
         protected override void OnActionTriggered(in CallbackContext context)
         {
-            if (context.CompareActionName(LookAction))
+            if (context.CompareActionName(Look))
             {
 #if UNITY_EDITOR
                 if (!isDebug)

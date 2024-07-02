@@ -11,32 +11,32 @@ namespace PlayerControl
         /// <summary>
         /// "Speed" animation hash.
         /// </summary>
-        public readonly int SpeedAnim;
+        public readonly int Speed;
 
         /// <summary>
         /// "IsGround" animation hash.
         /// </summary>
-        public readonly int GroundAnim;
+        public readonly int IsGround;
 
         /// <summary>
         /// "JumpStart" animation hash.
         /// </summary>
-        public readonly int JumpStartAnim;
+        public readonly int JumpStart;
 
         /// <summary>
         /// "DoubleJump" animation hash.
         /// </summary>
-        public readonly int DoubleJumpAnim;
+        public readonly int DoubleJump;
 
         /// <summary>
         /// "Forward" animation hash.
         /// </summary>
-        public readonly int ForwardAnim;
+        public readonly int Forward;
 
         /// <summary>
         /// "SideStep" animation hash.
         /// </summary>
-        public readonly int SideStepAnim;
+        public readonly int SideStep;
 
         // Ensure that this class is not generated before Awake.
         public AnimHashConstants(in Object obj)
@@ -45,41 +45,41 @@ namespace PlayerControl
             {
                 throw new System.ArgumentNullException(nameof(obj));
             }
-            SpeedAnim = Animator.StringToHash("Speed");
-            GroundAnim = Animator.StringToHash("IsGround");
-            JumpStartAnim = Animator.StringToHash("JumpStart");
-            DoubleJumpAnim = Animator.StringToHash("DoubleJump");
-            ForwardAnim = Animator.StringToHash("Forward");
-            SideStepAnim = Animator.StringToHash("SideStep");
+            Speed = Animator.StringToHash(nameof(Speed));
+            IsGround = Animator.StringToHash(nameof(IsGround));
+            JumpStart = Animator.StringToHash(nameof(JumpStart));
+            DoubleJump = Animator.StringToHash(nameof(DoubleJump));
+            Forward = Animator.StringToHash(nameof(Forward));
+            SideStep = Animator.StringToHash(nameof(SideStep));
         }
 
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder(nameof(AnimHashConstants));
             builder.Append(" {");
-            builder.Append(nameof(SpeedAnim));
+            builder.Append(nameof(Speed));
             builder.Append(" = ");
-            builder.Append(SpeedAnim);
+            builder.Append(Speed);
             builder.Append(", ");
-            builder.Append(nameof(GroundAnim));
+            builder.Append(nameof(IsGround));
             builder.Append(" = ");
-            builder.Append(GroundAnim);
+            builder.Append(IsGround);
             builder.Append(", ");
-            builder.Append(nameof(JumpStartAnim));
+            builder.Append(nameof(JumpStart));
             builder.Append(" = ");
-            builder.Append(JumpStartAnim);
+            builder.Append(JumpStart);
             builder.Append(", ");
-            builder.Append(nameof(DoubleJumpAnim));
+            builder.Append(nameof(DoubleJump));
             builder.Append(" = ");
-            builder.Append(DoubleJumpAnim);
+            builder.Append(DoubleJump);
             builder.Append(", ");
-            builder.Append(nameof(ForwardAnim));
+            builder.Append(nameof(Forward));
             builder.Append(" = ");
-            builder.Append(ForwardAnim);
+            builder.Append(Forward);
             builder.Append(", ");
-            builder.Append(nameof(SideStepAnim));
+            builder.Append(nameof(SideStep));
             builder.Append(" = ");
-            builder.Append(SideStepAnim);
+            builder.Append(SideStep);
             builder.Append(" }");
             return builder.ToString();
         }
