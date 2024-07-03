@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Unity.TinyCharacterController.Check;
 using Unity.TinyCharacterController.Control;
 using Unity.TinyCharacterController.Interfaces.Core;
@@ -61,43 +60,23 @@ namespace PlayerControl
 
         protected ref readonly AnimHashConstants Constants => ref constants;
 
-        protected bool IsDoubleJump
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => JumpControl.AerialJumpCount >= 1;
-        }
+        protected bool IsDoubleJump => JumpControl.AerialJumpCount >= 1;
 
-        protected float CurrentSpeed
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => MoveControl.CurrentSpeed;
-        }
+        protected float CurrentSpeed => MoveControl.CurrentSpeed;
 
-        protected bool IsOnGround
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => GroundCheck.IsOnGround;
-        }
+        protected bool IsOnGround=> GroundCheck.IsOnGround;
 
-        protected Vector3 LocalDirection
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => MoveControl.LocalDirection;
-        }
+        protected Vector3 LocalDirection=> MoveControl.LocalDirection;
 
         protected Vector3 WorldPosition
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => Transform.Position;
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set => Transform.Position = value;
         }
 
         protected Quaternion WorldRotation
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => Transform.Rotation;
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set => Transform.Rotation = value;
         }
 
