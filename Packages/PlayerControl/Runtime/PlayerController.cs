@@ -129,7 +129,7 @@ namespace PlayerControl
         protected virtual void Start()
         {
             transform = GetComponent<ITransform>();
-            constants = new AnimHashConstants(this);
+            constants = new AnimHashConstants();
             PlayerInput.onActionTriggered += context => OnActionTriggered(context);
             JumpControl.OnJump.AddListener(OnJump);
         }
