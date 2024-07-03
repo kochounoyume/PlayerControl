@@ -129,10 +129,46 @@ namespace PlayerControl
 
         protected virtual void Start()
         {
-            transform = GetComponent<ITransform>();
-            constants = new AnimHashConstants();
-            PlayerInput.onActionTriggered += context => OnActionTriggered(context);
-            JumpControl.OnJump.AddListener(OnJump);
+            try
+            {
+                transform = GetComponent<ITransform>();
+            }
+            catch (Exception e)
+            {
+                Exception ee = new Exception("Failed to get the ITransform component.", e);
+                Debug.LogException(ee);
+                throw;
+            }
+            try
+            {
+                constants = new AnimHashConstants();
+            }
+            catch (Exception e)
+            {
+                Exception ee = new Exception("Failed to create the AnimHashConstants.", e);
+                Debug.LogException(ee);
+                throw;
+            }
+            try
+            {
+                PlayerInput.onActionTriggered += context => OnActionTriggered(context);
+            }
+            catch (Exception e)
+            {
+                Exception ee = new Exception("Failed to set the action triggered event.", e);
+                Debug.LogException(ee);
+                throw;
+            }
+            try
+            {
+                JumpControl.OnJump.AddListener(OnJump);
+            }
+            catch (Exception e)
+            {
+                Exception ee = new Exception("Failed to set the jump event.", e);
+                Debug.LogException(ee);
+                throw;
+            }
         }
 
         protected virtual void Update()
@@ -140,6 +176,12 @@ namespace PlayerControl
             try
             {
                 Animator.SetFloat(constants.Speed, CurrentSpeed);
+            }
+            catch (NullReferenceException e) when (constants == null)
+            {
+                Exception ee = new Exception("Failed to set the speed parameter in constants.", e);
+                Debug.LogException(ee);
+                throw;
             }
             catch (Exception e)
             {
