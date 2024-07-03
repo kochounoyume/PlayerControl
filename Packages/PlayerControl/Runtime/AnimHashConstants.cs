@@ -39,11 +39,11 @@ namespace PlayerControl
         public readonly int SideStep;
 
         // Ensure that this class is not generated before Awake.
-        public AnimHashConstants(in Object obj)
+        public AnimHashConstants(in MonoBehaviour monoBehaviour)
         {
-            if (obj == null)
+            if (monoBehaviour == null)
             {
-                throw new System.ArgumentNullException(nameof(obj));
+                throw new System.ArgumentNullException(nameof(monoBehaviour));
             }
             Speed = Animator.StringToHash(nameof(Speed));
             IsGround = Animator.StringToHash(nameof(IsGround));
