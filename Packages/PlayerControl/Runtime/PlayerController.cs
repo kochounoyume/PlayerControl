@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.TinyCharacterController.Check;
@@ -136,13 +137,40 @@ namespace PlayerControl
 
         protected virtual void Update()
         {
-            Animator.SetFloat(constants.Speed, CurrentSpeed);
-            Animator.SetBool(constants.IsGround, IsOnGround);
+            try
+            {
+                Animator.SetFloat(constants.Speed, CurrentSpeed);
+            }
+            catch (Exception e)
+            {
+                Exception ee = new Exception("Failed to set the speed parameter.", e);
+                Debug.LogException(ee);
+                throw;
+            }
+            try
+            {
+                Animator.SetBool(constants.IsGround, IsOnGround);
+            }
+            catch (Exception e)
+            {
+                Exception ee = new Exception("Failed to set the isGround parameter.", e);
+                Debug.LogException(ee);
+                throw;
+            }
 
-            Vector3 currentDirection = LocalDirection;
-            float deltaTime = Time.deltaTime;
-            Animator.SetFloat(constants.Forward, currentDirection.z, MoveDampTime, deltaTime);
-            Animator.SetFloat(constants.SideStep, currentDirection.x, MoveDampTime, deltaTime);
+            try
+            {
+                Vector3 currentDirection = LocalDirection;
+                float deltaTime = Time.deltaTime;
+                Animator.SetFloat(constants.Forward, currentDirection.z, MoveDampTime, deltaTime);
+                Animator.SetFloat(constants.SideStep, currentDirection.x, MoveDampTime, deltaTime);
+            }
+            catch (Exception e)
+            {
+                Exception ee = new Exception("Failed to set the forward and sideStep parameters.", e);
+                Debug.LogException(ee);
+                throw;
+            }
         }
 
         protected virtual void OnActionTriggered(in CallbackContext context)
