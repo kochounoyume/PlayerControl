@@ -37,14 +37,9 @@ namespace PlayerControl
         /// "SideStep" animation hash.
         /// </summary>
         public readonly int SideStep;
-
-        // Ensure that this class is not generated before Awake.
-        public AnimHashConstants(in MonoBehaviour monoBehaviour)
+        
+        internal AnimHashConstants()
         {
-            if (monoBehaviour == null)
-            {
-                throw new System.ArgumentNullException(nameof(monoBehaviour));
-            }
             Speed = Animator.StringToHash(nameof(Speed));
             IsGround = Animator.StringToHash(nameof(IsGround));
             JumpStart = Animator.StringToHash(nameof(JumpStart));
