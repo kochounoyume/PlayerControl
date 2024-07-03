@@ -37,7 +37,7 @@ namespace PlayerControl
         /// "SideStep" animation hash.
         /// </summary>
         public readonly int SideStep;
-        
+
         internal AnimHashConstants()
         {
             Speed = Animator.StringToHash(nameof(Speed));
