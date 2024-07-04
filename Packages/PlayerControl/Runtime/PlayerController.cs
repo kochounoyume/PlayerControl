@@ -107,21 +107,33 @@ namespace PlayerControl
 
         protected virtual void Start()
         {
+            Debug.Log("110");
             transform = GetComponent<ITransform>();
+            Debug.Log("112");
             constants = new AnimHashConstants();
+            Debug.Log("114");
             PlayerInput.onActionTriggered += context => OnActionTriggered(context);
+            Debug.Log("116");
             JumpControl.OnJump.AddListener(OnJump);
+            Debug.Log("118");
         }
 
         protected virtual void Update()
         {
+            Debug.Log("123");
             Animator.SetFloat(constants.Speed, CurrentSpeed);
+            Debug.Log("125");
             Animator.SetBool(constants.IsGround, IsOnGround);
+            Debug.Log("127");
 
             Vector3 currentDirection = LocalDirection;
+            Debug.Log("130");
             float deltaTime = Time.deltaTime;
+            Debug.Log("132");
             Animator.SetFloat(constants.Forward, currentDirection.z, MoveDampTime, deltaTime);
+            Debug.Log("134");
             Animator.SetFloat(constants.SideStep, currentDirection.x, MoveDampTime, deltaTime);
+            Debug.Log("136");
         }
 
         protected virtual void OnActionTriggered(in CallbackContext context)

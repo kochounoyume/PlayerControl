@@ -42,33 +42,42 @@ namespace PlayerControl
 
         protected override void Start()
         {
+            Debug.Log("45");
             base.Start();
+            Debug.Log("47");
             uiView.Joystick.OnValueChanged += value =>
             {
                 const InputActionPhase phase = InputActionPhase.Performed;
                 base.OnActionTriggered(new CallbackContext(Move, phase, value));
             };
+            Debug.Log("53");
             uiView.SprintButton.OnStart += () =>
             {
                 const InputActionPhase phase = InputActionPhase.Performed;
                 base.OnActionTriggered(new CallbackContext(Sprint, phase));
             };
+            Debug.Log("59");
             uiView.SprintButton.OnRelease += () =>
             {
                 const InputActionPhase phase = InputActionPhase.Canceled;
                 base.OnActionTriggered(new CallbackContext(Sprint, phase));
             };
+            Debug.Log("65");
             uiView.JumpButton.onClick.AddListener(() =>
             {
                 const InputActionPhase phase = InputActionPhase.Started;
                 base.OnActionTriggered(new CallbackContext(Jump, phase));
             });
+            Debug.Log("71");
         }
 
         protected override void Update()
         {
+            Debug.Log("76");
             base.Update();
+            Debug.Log("78");
             var activeTouches = Touch.activeTouches;
+            Debug.Log("80");
             ReadOnlySpan<int> avoidTouchIds = (uiView.Joystick.IsUsing, uiView.SprintButton.IsUsing) switch
             {
                 (true, true) => stackalloc int[] { uiView.Joystick.TouchId, uiView.SprintButton.TouchId },
@@ -76,7 +85,9 @@ namespace PlayerControl
                 (false, true) => stackalloc int[] { uiView.SprintButton.TouchId },
                 _ => ReadOnlySpan<int>.Empty
             };
+            Debug.Log("88");
             if (activeTouches.Count <= avoidTouchIds.Length) return;
+            Debug.Log("90 おそらくここまで到達しない;指を画面に触れてないから");
             Touch activeTouch = default;
             foreach (Touch touch in activeTouches)
             {
