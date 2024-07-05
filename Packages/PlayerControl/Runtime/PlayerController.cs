@@ -121,6 +121,7 @@ namespace PlayerControl
         protected virtual void Update()
         {
             Debug.Log("123");
+            Debug.Log($"{nameof(CurrentSpeed)}は{MoveControl == null}, {nameof(constants)}は{constants == null}");
             Animator.SetFloat(constants.Speed, CurrentSpeed);
             Debug.Log("125");
             Animator.SetBool(constants.IsGround, IsOnGround);
