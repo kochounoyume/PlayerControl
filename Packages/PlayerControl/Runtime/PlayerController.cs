@@ -21,64 +21,48 @@ namespace PlayerControl
     public class PlayerController : MonoBehaviour
     {
         [SerializeField]
-        private Animator animator;
+        protected Animator animator;
 
         [SerializeField]
-        private PlayerInput playerInput;
+        protected PlayerInput playerInput;
 
         [SerializeField]
-        private MoveControl moveControl;
+        protected MoveControl moveControl;
 
         [SerializeField]
-        private JumpControl jumpControl;
+        protected JumpControl jumpControl;
 
         [SerializeField]
-        private GroundCheck groundCheck;
+        protected GroundCheck groundCheck;
 
         [SerializeField]
-        private TpsCameraControl cameraControl;
+        protected TpsCameraControl cameraControl;
 
-        private new ITransform transform;
+        protected new ITransform transform;
 
         private AnimHashConstants constants;
 
-        private PointerEventData pointerEventData;
+        protected bool IsDoubleJump => jumpControl.AerialJumpCount >= 1;
 
-        protected ref readonly Animator Animator => ref animator;
+        protected float CurrentSpeed => moveControl.CurrentSpeed;
 
-        protected ref readonly PlayerInput PlayerInput => ref playerInput;
+        protected bool IsOnGround=> groundCheck.IsOnGround;
 
-        protected ref readonly MoveControl MoveControl => ref moveControl;
-
-        protected ref readonly JumpControl JumpControl => ref jumpControl;
-
-        protected ref readonly GroundCheck GroundCheck => ref groundCheck;
-
-        protected ref readonly TpsCameraControl CameraControl => ref cameraControl;
-
-        protected ref readonly ITransform Transform => ref transform;
-
-        protected ref readonly AnimHashConstants Constants => ref constants;
-
-        protected bool IsDoubleJump => JumpControl.AerialJumpCount >= 1;
-
-        protected float CurrentSpeed => MoveControl.CurrentSpeed;
-
-        protected bool IsOnGround=> GroundCheck.IsOnGround;
-
-        protected Vector3 LocalDirection=> MoveControl.LocalDirection;
+        protected Vector3 LocalDirection=> moveControl.LocalDirection;
 
         protected Vector3 WorldPosition
         {
-            get => Transform.Position;
-            set => Transform.Position = value;
+            get => transform.Position;
+            set => transform.Position = value;
         }
 
         protected Quaternion WorldRotation
         {
-            get => Transform.Rotation;
-            set => Transform.Rotation = value;
+            get => transform.Rotation;
+            set => transform.Rotation = value;
         }
+
+        public AnimHashConstants Constants => constants ??= new AnimHashConstants();
 
         /// <summary>
         /// "Move" action name.
@@ -109,31 +93,29 @@ namespace PlayerControl
         {
             Debug.Log("110");
             transform = GetComponent<ITransform>();
-            Debug.Log("112");
-            constants = new AnimHashConstants();
             Debug.Log("114");
-            PlayerInput.onActionTriggered += context => OnActionTriggered(context);
+            playerInput.onActionTriggered += context => OnActionTriggered(context);
             Debug.Log("116");
-            JumpControl.OnJump.AddListener(OnJump);
+            jumpControl.OnJump.AddListener(OnJump);
             Debug.Log("118");
         }
 
         protected virtual void Update()
         {
             Debug.Log("123");
-            Debug.Log($"{nameof(CurrentSpeed)}は{MoveControl == null}, {nameof(constants)}は{constants == null}");
-            Animator.SetFloat(constants.Speed, CurrentSpeed);
+            Debug.Log($"{nameof(CurrentSpeed)}は{moveControl == null}, {nameof(constants)}は{Constants == null}");
+            animator.SetFloat(Constants!.Speed, CurrentSpeed);
             Debug.Log("125");
-            Animator.SetBool(constants.IsGround, IsOnGround);
+            animator.SetBool(Constants!.IsGround, IsOnGround);
             Debug.Log("127");
 
             Vector3 currentDirection = LocalDirection;
             Debug.Log("130");
             float deltaTime = Time.deltaTime;
             Debug.Log("132");
-            Animator.SetFloat(constants.Forward, currentDirection.z, MoveDampTime, deltaTime);
+            animator.SetFloat(Constants!.Forward, currentDirection.z, MoveDampTime, deltaTime);
             Debug.Log("134");
-            Animator.SetFloat(constants.SideStep, currentDirection.x, MoveDampTime, deltaTime);
+            animator.SetFloat(Constants!.SideStep, currentDirection.x, MoveDampTime, deltaTime);
             Debug.Log("136");
         }
 
@@ -142,26 +124,26 @@ namespace PlayerControl
             switch (context.ActionName)
             {
                 case Move when context.Phase is InputActionPhase.Performed or InputActionPhase.Canceled:
-                    MoveControl.Move(context.Value);
+                    moveControl.Move(context.Value);
                     break;
                 case Sprint when context.Phase is InputActionPhase.Performed:
                     const float sprintHoldSpeed = 4.0f;
-                    MoveControl.MoveSpeed = sprintHoldSpeed;
+                    moveControl.MoveSpeed = sprintHoldSpeed;
                     break;
                 case Sprint when context.Phase is InputActionPhase.Canceled:
                     const float sprintReleasedSpeed = 1.2f;
-                    MoveControl.MoveSpeed = sprintReleasedSpeed;
+                    moveControl.MoveSpeed = sprintReleasedSpeed;
                     break;
                 case Jump when context.Phase is InputActionPhase.Started:
-                    JumpControl.Jump();
+                    jumpControl.Jump();
                     break;
                 case Look when context.Phase is InputActionPhase.Performed:
-                    CameraControl.RotateCamera(context.Value);
+                    cameraControl.RotateCamera(context.Value);
                     break;
             }
         }
 
-        protected virtual void OnJump() => Animator.Play(IsDoubleJump ? constants.DoubleJump : constants.JumpStart);
+        protected virtual void OnJump() => animator.Play(IsDoubleJump ? Constants.DoubleJump : Constants.JumpStart);
 
         /// <summary>
         /// Check if the pointer is hitting UI.
@@ -172,7 +154,7 @@ namespace PlayerControl
             Pointer device = playerInput.GetDevice<Pointer>();
             if (device == null) return false;
             EventSystem eventSystem = EventSystem.current;
-            pointerEventData ??= new PointerEventData(eventSystem);
+            PointerEventData pointerEventData = new PointerEventData(eventSystem);
             pointerEventData.position = device.position.ReadValue();
             List<RaycastResult> results = new List<RaycastResult>();
             eventSystem.RaycastAll(pointerEventData, results);
