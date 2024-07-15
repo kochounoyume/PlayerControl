@@ -57,7 +57,17 @@ namespace PlayerControl
 
         protected ref readonly TpsCameraControl CameraControl => ref cameraControl;
 
-        protected ref readonly ITransform Transform => ref transform;
+        protected ref readonly ITransform Transform
+        {
+            get
+            {
+                if (transform == null)
+                {
+                    transform = GetComponent<ITransform>();
+                }
+                return ref transform;
+            }
+        }
 
         /// <summary>
         /// The constants for the animation hash.
