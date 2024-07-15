@@ -98,6 +98,15 @@ namespace PlayerControl
         }
 
         /// <summary>
+        /// The event that is triggered when the player jumps.
+        /// </summary>
+        public UnityEngine.Events.UnityEvent OnJumped
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => JumpControl.OnJump;
+        }
+
+        /// <summary>
         /// The world position of the player.
         /// </summary>
         public Vector3 WorldPosition
