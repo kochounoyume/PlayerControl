@@ -8,10 +8,10 @@ using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 namespace PlayerControl
 {
-    public class MobilePlayerController : PlayerController
+    public class MobilePlayerController : PlayerController, IControlUISetter
     {
         [SerializeField]
-        protected MobileControlUIView uiView; // It is assumed that values are dynamically overwritten at the inheritance point.
+        private MobileControlUIView uiView;
 
         [Header("Processors")]
         [Header("Invert Vector2")]
@@ -36,6 +36,11 @@ namespace PlayerControl
         [SerializeField]
         [Tooltip("If true, the look action will be triggered when the mouse changes direction.")]
         private bool isDebug = false;
+
+        protected ref readonly MobileControlUIView UIView => ref uiView;
+
+        /// <inheritdoc />
+        MobileControlUIView IControlUISetter.UIView { set => uiView = value; }
 
         protected virtual void OnEnable() => EnhancedTouchSupport.Enable();
 
