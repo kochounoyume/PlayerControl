@@ -59,7 +59,10 @@ namespace PlayerControl
 
         protected ref readonly ITransform Transform => ref transform;
 
-        protected ref readonly AnimHashConstants Constants => ref constants;
+        /// <summary>
+        /// The constants for the animation hash.
+        /// </summary>
+        public AnimHashConstants Constants => constants ??= new AnimHashConstants();
 
         /// <summary>
         /// Whether the player is performing a double jump.
@@ -156,7 +159,6 @@ namespace PlayerControl
         protected virtual void Start()
         {
             transform = GetComponent<ITransform>();
-            constants = new AnimHashConstants();
             PlayerInput.onActionTriggered += context => OnActionTriggered(context);
             JumpControl.OnJump.AddListener(OnJump);
         }
