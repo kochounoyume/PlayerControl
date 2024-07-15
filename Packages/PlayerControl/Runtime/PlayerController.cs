@@ -61,31 +61,46 @@ namespace PlayerControl
 
         protected ref readonly AnimHashConstants Constants => ref constants;
 
-        protected bool IsDoubleJump
+        /// <summary>
+        /// Whether the player is performing a double jump.
+        /// </summary>
+        public bool IsDoubleJump
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => JumpControl.AerialJumpCount >= 1;
         }
 
-        protected float CurrentSpeed
+        /// <summary>
+        /// The current speed of the player.
+        /// </summary>
+        public float CurrentSpeed
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => MoveControl.CurrentSpeed;
         }
 
-        protected bool IsOnGround
+        /// <summary>
+        /// Whether the player is on the ground.
+        /// </summary>
+        public bool IsOnGround
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => GroundCheck.IsOnGround;
         }
 
-        protected Vector3 LocalDirection
+        /// <summary>
+        /// The local direction of the player.
+        /// </summary>
+        public Vector3 LocalDirection
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => MoveControl.LocalDirection;
         }
 
-        protected Vector3 WorldPosition
+        /// <summary>
+        /// The world position of the player.
+        /// </summary>
+        public Vector3 WorldPosition
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => Transform.Position;
@@ -93,7 +108,10 @@ namespace PlayerControl
             set => Transform.Position = value;
         }
 
-        protected Quaternion WorldRotation
+        /// <summary>
+        /// The world rotation of the player.
+        /// </summary>
+        public Quaternion WorldRotation
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => Transform.Rotation;
