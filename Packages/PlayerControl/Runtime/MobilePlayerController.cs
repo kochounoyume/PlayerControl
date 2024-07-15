@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.InputSystem.Processors;
+using UnityEngine.Pool;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 namespace PlayerControl
@@ -89,15 +90,17 @@ namespace PlayerControl
             if (activeTouch.Equals(default)) return;
 
             Vector2 delta = activeTouch.delta;
-            ReadOnlySpan<InputProcessor<Vector2>> processors = new InputProcessor<Vector2>[]
+            using (GenericPool<InvertVector2Processor>.Get(out var invertProcessor))
             {
-                new InvertVector2Processor { invertX = invertX, invertY = invertY },
-                new ScaleVector2Processor { x = scaleX, y = scaleY }
-            };
-
-            foreach (InputProcessor<Vector2> processor in processors)
+                invertProcessor.invertX = invertX;
+                invertProcessor.invertY = invertY;
+                delta = invertProcessor.Process(delta, null);
+            }
+            using (GenericPool<ScaleVector2Processor>.Get(out var scaleProcessor))
             {
-                delta = processor.Process(delta, null);
+                scaleProcessor.x = scaleX;
+                scaleProcessor.y = scaleY;
+                delta = scaleProcessor.Process(delta, null);
             }
             base.OnActionTriggered(new CallbackContext(Look, InputActionPhase.Performed, delta));
         }
