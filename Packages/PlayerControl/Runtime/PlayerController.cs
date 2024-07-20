@@ -175,13 +175,13 @@ namespace PlayerControl
 
         protected virtual void Update()
         {
-            Animator.SetFloat(constants.Speed, CurrentSpeed);
-            Animator.SetBool(constants.IsGround, IsOnGround);
+            Animator.SetFloat(Constants.Speed, CurrentSpeed);
+            Animator.SetBool(Constants.IsGround, IsOnGround);
 
             Vector3 currentDirection = LocalDirection;
             float deltaTime = Time.deltaTime;
-            Animator.SetFloat(constants.Forward, currentDirection.z, MoveDampTime, deltaTime);
-            Animator.SetFloat(constants.SideStep, currentDirection.x, MoveDampTime, deltaTime);
+            Animator.SetFloat(Constants.Forward, currentDirection.z, MoveDampTime, deltaTime);
+            Animator.SetFloat(Constants.SideStep, currentDirection.x, MoveDampTime, deltaTime);
         }
 
         protected virtual void OnActionTriggered(in CallbackContext context)
@@ -208,7 +208,7 @@ namespace PlayerControl
             }
         }
 
-        protected virtual void OnJump() => Animator.Play(IsDoubleJump ? constants.DoubleJump : constants.JumpStart);
+        protected virtual void OnJump() => Animator.Play(IsDoubleJump ? Constants.DoubleJump : Constants.JumpStart);
 
         /// <summary>
         /// Check if the pointer is hitting UI.
