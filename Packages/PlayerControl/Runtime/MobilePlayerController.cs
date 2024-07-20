@@ -51,23 +51,19 @@ namespace PlayerControl
             base.Start();
             uiView.Joystick.OnValueChanged += value =>
             {
-                const InputActionPhase phase = InputActionPhase.Performed;
-                base.OnActionTriggered(new CallbackContext(Move, phase, value));
+                base.OnActionTriggered(new CallbackContext(Move, InputActionPhase.Performed, value));
             };
             uiView.SprintButton.OnStart += () =>
             {
-                const InputActionPhase phase = InputActionPhase.Performed;
-                base.OnActionTriggered(new CallbackContext(Sprint, phase));
+                base.OnActionTriggered(new CallbackContext(Sprint, InputActionPhase.Performed));
             };
             uiView.SprintButton.OnRelease += () =>
             {
-                const InputActionPhase phase = InputActionPhase.Canceled;
-                base.OnActionTriggered(new CallbackContext(Sprint, phase));
+                base.OnActionTriggered(new CallbackContext(Sprint, InputActionPhase.Canceled));
             };
             uiView.JumpButton.onClick.AddListener(() =>
             {
-                const InputActionPhase phase = InputActionPhase.Started;
-                base.OnActionTriggered(new CallbackContext(Jump, phase));
+                base.OnActionTriggered(new CallbackContext(Jump, InputActionPhase.Started));
             });
         }
 
