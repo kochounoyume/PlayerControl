@@ -70,6 +70,11 @@ namespace PlayerControl
         }
 
         /// <summary>
+        /// The event that is triggered when the player jumps.
+        /// </summary>
+        public ref readonly UnityEngine.Events.UnityEvent OnJumped => ref JumpControl.OnJump;
+
+        /// <summary>
         /// The constants for the animation hash.
         /// </summary>
         public AnimHashConstants Constants => constants ??= new AnimHashConstants();
@@ -108,15 +113,6 @@ namespace PlayerControl
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => MoveControl.LocalDirection;
-        }
-
-        /// <summary>
-        /// The event that is triggered when the player jumps.
-        /// </summary>
-        public UnityEngine.Events.UnityEvent OnJumped
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => JumpControl.OnJump;
         }
 
         /// <summary>
