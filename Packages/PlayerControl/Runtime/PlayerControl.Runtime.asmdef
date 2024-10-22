@@ -3,7 +3,8 @@
     "rootNamespace": "PlayerControl",
     "references": [
         "GUID:fd9b4bfdbc54f44ec99514cf98018183",
-        "GUID:75469ad4d38634e559750d17036d5f7c"
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:2bafac87e7f4b9b418d9448d219b01ab"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
