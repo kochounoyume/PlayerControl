@@ -69,4 +69,4 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           targetPlatform: Android
-          unityVersion: 6000.0.1f1
+          unityVersion: 6000.0.23f1
