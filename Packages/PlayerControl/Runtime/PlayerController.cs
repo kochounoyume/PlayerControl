@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.TinyCharacterController.Check;
@@ -41,7 +42,7 @@ namespace PlayerControl
 
         private new ITransform transform;
 
-        private AnimHashConstants constants;
+        private readonly Lazy<AnimHashConstants> constants = new (static () => new AnimHashConstants());
 
         private PointerEventData pointerEventData;
 
@@ -77,7 +78,7 @@ namespace PlayerControl
         /// <summary>
         /// The constants for the animation hash.
         /// </summary>
-        public AnimHashConstants Constants => constants ??= new AnimHashConstants();
+        public AnimHashConstants Constants => constants.Value;
 
         /// <summary>
         /// Whether the player is performing a double jump.
