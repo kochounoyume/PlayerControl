@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.TinyCharacterController.Check;
 using Unity.TinyCharacterController.Control;
 using Unity.TinyCharacterController.Interfaces.Core;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace PlayerControl
@@ -22,6 +20,8 @@ namespace PlayerControl
     [RequireComponent(typeof(TpsCameraControl))]
     public class PlayerController : MonoBehaviour
     {
+        private readonly Lazy<AnimHashConstants> constants = new (static () => new AnimHashConstants());
+
         [SerializeField]
         private Animator animator;
 
@@ -42,29 +42,20 @@ namespace PlayerControl
 
         private new ITransform transform;
 
-        private readonly Lazy<AnimHashConstants> constants = new (static () => new AnimHashConstants());
+        public ref readonly Animator Animator => ref animator;
+        public ref readonly PlayerInput PlayerInput => ref playerInput;
+        public ref readonly MoveControl MoveControl => ref moveControl;
+        public ref readonly JumpControl JumpControl => ref jumpControl;
+        public ref readonly GroundCheck GroundCheck => ref groundCheck;
+        public ref readonly TpsCameraControl CameraControl => ref cameraControl;
 
-        private PointerEventData pointerEventData;
-
-        protected ref readonly Animator Animator => ref animator;
-
-        protected ref readonly PlayerInput PlayerInput => ref playerInput;
-
-        protected ref readonly MoveControl MoveControl => ref moveControl;
-
-        protected ref readonly JumpControl JumpControl => ref jumpControl;
-
-        protected ref readonly GroundCheck GroundCheck => ref groundCheck;
-
-        protected ref readonly TpsCameraControl CameraControl => ref cameraControl;
-
-        protected ref readonly ITransform Transform
+        public ref readonly ITransform Transform
         {
             get
             {
                 if (transform == null)
                 {
-                    transform = GetComponent<ITransform>();
+                    TryGetComponent(out transform);
                 }
                 return ref transform;
             }
@@ -206,21 +197,5 @@ namespace PlayerControl
         }
 
         protected virtual void OnJump() => Animator.Play(IsDoubleJump ? Constants.DoubleJump : Constants.JumpStart);
-
-        /// <summary>
-        /// Check if the pointer is hitting UI.
-        /// </summary>
-        /// <returns>True if the pointer is hitting UI.</returns>
-        protected bool IsPointerHittingUI()
-        {
-            Pointer device = playerInput.GetDevice<Pointer>();
-            if (device == null) return false;
-            EventSystem eventSystem = EventSystem.current;
-            pointerEventData ??= new PointerEventData(eventSystem);
-            pointerEventData.position = device.position.ReadValue();
-            List<RaycastResult> results = new List<RaycastResult>();
-            eventSystem.RaycastAll(pointerEventData, results);
-            return results.Count > 0;
-        }
     }
 }

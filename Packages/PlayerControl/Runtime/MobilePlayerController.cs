@@ -8,7 +8,7 @@ using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 namespace PlayerControl
 {
-    public class MobilePlayerController : PlayerController, IControlUISetter
+    public class MobilePlayerController : PlayerController
     {
         [SerializeField]
         private MobileControlUIView uiView;
@@ -37,10 +37,14 @@ namespace PlayerControl
         [Tooltip("If true, the look action will be triggered when the mouse changes direction.")]
         private bool isDebug = false;
 
-        protected ref readonly MobileControlUIView UIView => ref uiView;
-
-        /// <inheritdoc />
-        MobileControlUIView IControlUISetter.UIView { set => uiView = value; }
+        /// <summary>
+        /// Operation UI for Mobile.
+        /// </summary>
+        public MobileControlUIView UIView
+        {
+            get => uiView;
+            set => uiView = value;
+        }
 
         protected virtual void OnEnable() => EnhancedTouchSupport.Enable();
 

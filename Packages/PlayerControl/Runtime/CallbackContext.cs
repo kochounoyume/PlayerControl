@@ -6,9 +6,7 @@ namespace PlayerControl
     public readonly ref struct CallbackContext
     {
         public readonly InputActionPhase Phase;
-
         public readonly Vector2 Value;
-
         public readonly string ActionName;
 
         /// <summary>
@@ -18,7 +16,7 @@ namespace PlayerControl
         /// <returns>True if the action name is equal to the target string.</returns>
         public bool CompareActionName(in string other) => ActionName == other;
 
-        public CallbackContext(in string actionName, in InputActionPhase phase, Vector2 value = default)
+        public CallbackContext(in string actionName, in InputActionPhase phase, in Vector2 value = default)
         {
             ActionName = actionName;
             Phase = phase;

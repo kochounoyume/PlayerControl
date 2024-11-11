@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using Vector2 = UnityEngine.Vector2;
+using UnityEngine;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 namespace PlayerControl
