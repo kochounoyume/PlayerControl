@@ -40,11 +40,7 @@ namespace PlayerControl
         /// <summary>
         /// Operation UI for Mobile.
         /// </summary>
-        public MobileControlUIView UIView
-        {
-            get => uiView;
-            set => uiView = value;
-        }
+        public ref MobileControlUIView UIView => ref uiView;
 
         protected virtual void OnEnable() => EnhancedTouchSupport.Enable();
 
