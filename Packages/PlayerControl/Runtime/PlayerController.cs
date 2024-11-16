@@ -2,6 +2,8 @@ using System;
 using System.Runtime.CompilerServices;
 using Unity.TinyCharacterController.Check;
 using Unity.TinyCharacterController.Control;
+using Unity.TinyCharacterController.Core;
+using Unity.TinyCharacterController.Interfaces.Components;
 using Unity.TinyCharacterController.Interfaces.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,6 +16,7 @@ namespace PlayerControl
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(PlayerInput))]
     [RequireComponent(typeof(ITransform))]
+    [RequireComponent(typeof(IWarp))]
     [RequireComponent(typeof(MoveControl))]
     [RequireComponent(typeof(JumpControl))]
     [RequireComponent(typeof(GroundCheck))]
@@ -24,23 +27,18 @@ namespace PlayerControl
 
         [SerializeField]
         private Animator animator;
-
         [SerializeField]
         private PlayerInput playerInput;
-
         [SerializeField]
         private MoveControl moveControl;
-
         [SerializeField]
         private JumpControl jumpControl;
-
         [SerializeField]
         private GroundCheck groundCheck;
-
         [SerializeField]
         private TpsCameraControl cameraControl;
-
         private new ITransform transform;
+        private IWarp warp;
 
         public ref readonly Animator Animator => ref animator;
         public ref readonly PlayerInput PlayerInput => ref playerInput;
@@ -48,18 +46,8 @@ namespace PlayerControl
         public ref readonly JumpControl JumpControl => ref jumpControl;
         public ref readonly GroundCheck GroundCheck => ref groundCheck;
         public ref readonly TpsCameraControl CameraControl => ref cameraControl;
-
-        public ref readonly ITransform Transform
-        {
-            get
-            {
-                if (transform == null)
-                {
-                    TryGetComponent(out transform);
-                }
-                return ref transform;
-            }
-        }
+        public ref readonly ITransform Transform => ref transform;
+        public ref readonly IWarp Warp => ref warp;
 
         /// <summary>
         /// The event that is triggered when the player jumps.
@@ -115,7 +103,7 @@ namespace PlayerControl
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => Transform.Position;
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            set => Transform.Position = value;
+            set => Warp.Warp(value);
         }
 
         /// <summary>
@@ -126,7 +114,7 @@ namespace PlayerControl
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => Transform.Rotation;
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            set => Transform.Rotation = value;
+            set => Warp.Warp(value);
         }
 
         /// <summary>
@@ -156,7 +144,15 @@ namespace PlayerControl
 
         protected virtual void Start()
         {
-            transform = GetComponent<ITransform>();
+            if (TryGetComponent(out BrainBase brain))
+            {
+                (transform, warp) = (brain, brain);
+            }
+            else
+            {
+                TryGetComponent(out transform);
+                TryGetComponent(out warp);
+            }
             PlayerInput.onActionTriggered += context => OnActionTriggered(context);
             JumpControl.OnJump.AddListener(OnJump);
         }
