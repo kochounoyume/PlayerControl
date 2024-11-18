@@ -118,6 +118,14 @@ namespace PlayerControl
         }
 
         /// <summary>
+        /// Whether the player can move.
+        /// <remarks>
+        /// Jumping and looking around are still allowed.
+        /// </remarks>
+        /// </summary>
+        public bool UnlockMove { get; set; } = true;
+
+        /// <summary>
         /// "Move" action name.
         /// </summary>
         public const string Move = nameof(Move);
@@ -172,7 +180,7 @@ namespace PlayerControl
         {
             switch (context.ActionName)
             {
-                case Move when context.Phase is InputActionPhase.Performed or InputActionPhase.Canceled:
+                case Move when context.Phase is InputActionPhase.Performed or InputActionPhase.Canceled && UnlockMove:
                     MoveControl.Move(context.Value);
                     break;
                 case Sprint when context.Phase is InputActionPhase.Performed:
