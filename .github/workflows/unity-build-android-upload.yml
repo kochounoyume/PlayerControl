@@ -58,7 +58,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           targetPlatform: Android
-          unityVersion: 6000.0.1f1
+          unityVersion: auto
 
       - name: Upload the Android Build
         uses: actions/upload-artifact@master
