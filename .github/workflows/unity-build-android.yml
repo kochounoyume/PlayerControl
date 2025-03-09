@@ -26,7 +26,7 @@ jobs:
 
       # LFSファイルのキャッシュを取得する
       - name: Restore LFS cache
-        uses: actions/cache@v4.0.2
+        uses: actions/cache@v4
         id: lfs-cache
         with:
           path: .git/lfs
@@ -45,7 +45,7 @@ jobs:
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       # Cache
-      - uses: actions/cache@v4.0.2
+      - uses: actions/cache@v4
         with:
           path: Library
           key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
