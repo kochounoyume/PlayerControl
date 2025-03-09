@@ -515,11 +515,24 @@ MonoBehaviour:
   groundCheck: {fileID: 316258814}
   cameraControl: {fileID: 316258819}
   uiView: {fileID: 2865767509760494374}
-  invertX: 0
-  invertY: 1
-  scaleX: 15
-  scaleY: 15
+  invertProcessor:
+    rid: 3281785138181832767
+  scaleProcessor:
+    rid: 3281785138181832768
   isDebug: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 3281785138181832767
+      type: {class: InvertVector2Processor, ns: UnityEngine.InputSystem.Processors, asm: Unity.InputSystem}
+      data:
+        invertX: 0
+        invertY: 1
+    - rid: 3281785138181832768
+      type: {class: ScaleVector2Processor, ns: UnityEngine.InputSystem.Processors, asm: Unity.InputSystem}
+      data:
+        x: 15
+        y: 15
 --- !u!1 &614508399
 GameObject:
   m_ObjectHideFlags: 0

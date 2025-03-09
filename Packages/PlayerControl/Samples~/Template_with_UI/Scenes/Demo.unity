@@ -38,12 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -780,11 +780,24 @@ MonoBehaviour:
   groundCheck: {fileID: 915682673}
   cameraControl: {fileID: 915682670}
   uiView: {fileID: 1078153792}
-  invertX: 0
-  invertY: 1
-  scaleX: 15
-  scaleY: 15
+  invertProcessor:
+    rid: 3281785138181832769
+  scaleProcessor:
+    rid: 3281785138181832770
   isDebug: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 3281785138181832769
+      type: {class: InvertVector2Processor, ns: UnityEngine.InputSystem.Processors, asm: Unity.InputSystem}
+      data:
+        invertX: 0
+        invertY: 1
+    - rid: 3281785138181832770
+      type: {class: ScaleVector2Processor, ns: UnityEngine.InputSystem.Processors, asm: Unity.InputSystem}
+      data:
+        x: 15
+        y: 15
 --- !u!1001 &1078153791
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -954,7 +967,7 @@ MonoBehaviour:
     m_Value: 10
   OutputChannel: 1
   StandbyUpdate: 2
-  m_StreamingVersion: 20230301
+  m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
     TrackingTarget: {fileID: 420325498}
@@ -1164,6 +1177,7 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
 --- !u!114 &2059755577
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.InputSystem.Processors;
-using UnityEngine.Pool;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 namespace PlayerControl
@@ -14,23 +13,11 @@ namespace PlayerControl
         private MobileControlUIView uiView;
 
         [Header("Processors")]
-        [Header("Invert Vector2")]
-        [SerializeField]
-        [Tooltip("If true, the <c>x</c> channel of the <c>Vector2</c> input value is inverted. True by default.")]
-        private bool invertX = false;
+        [SerializeReference]
+        private InvertVector2Processor invertProcessor = new () { invertX = false, invertY = true };
 
-        [SerializeField]
-        [Tooltip("If true, the <c>y</c> channel of the <c>Vector2</c> input value is inverted. True by default.")]
-        private bool invertY = true;
-
-        [Header("Scale Vector2")]
-        [SerializeField]
-        [Tooltip("Scale factor to multiply the incoming Vector2's X component by.")]
-        private float scaleX = 15.0f;
-
-        [SerializeField]
-        [Tooltip("Scale factor to multiply the incoming Vector2's Y component by.")]
-        private float scaleY = 15.0f;
+        [SerializeReference]
+        private ScaleVector2Processor scaleProcessor = new () { x = 15.0f, y = 15.0f };
 
         [Header("Debug Options")]
         [SerializeField]
@@ -40,7 +27,30 @@ namespace PlayerControl
         /// <summary>
         /// Operation UI for Mobile.
         /// </summary>
-        public ref MobileControlUIView UIView => ref uiView;
+        public virtual MobileControlUIView UIView
+        {
+            get => uiView;
+            set
+            {
+                uiView = value;
+                uiView.Joystick.OnValueChanged += value =>
+                {
+                    base.OnActionTriggered(new CallbackContext(Move, InputActionPhase.Performed, value));
+                };
+                uiView.SprintButton.OnStart += () =>
+                {
+                    base.OnActionTriggered(new CallbackContext(Sprint, InputActionPhase.Performed));
+                };
+                uiView.SprintButton.OnRelease += () =>
+                {
+                    base.OnActionTriggered(new CallbackContext(Sprint, InputActionPhase.Canceled));
+                };
+                uiView.JumpButton.onClick.AddListener(() =>
+                {
+                    base.OnActionTriggered(new CallbackContext(Jump, InputActionPhase.Started));
+                });
+            }
+        }
 
         protected virtual void OnEnable() => EnhancedTouchSupport.Enable();
 
@@ -49,22 +59,10 @@ namespace PlayerControl
         protected override void Start()
         {
             base.Start();
-            uiView.Joystick.OnValueChanged += value =>
+            if (uiView != null)
             {
-                base.OnActionTriggered(new CallbackContext(Move, InputActionPhase.Performed, value));
-            };
-            uiView.SprintButton.OnStart += () =>
-            {
-                base.OnActionTriggered(new CallbackContext(Sprint, InputActionPhase.Performed));
-            };
-            uiView.SprintButton.OnRelease += () =>
-            {
-                base.OnActionTriggered(new CallbackContext(Sprint, InputActionPhase.Canceled));
-            };
-            uiView.JumpButton.onClick.AddListener(() =>
-            {
-                base.OnActionTriggered(new CallbackContext(Jump, InputActionPhase.Started));
-            });
+                UIView = uiView;
+            }
         }
 
         protected override void Update()
@@ -84,18 +82,8 @@ namespace PlayerControl
                 if (avoidTouchIds.IndexOf(touch.touchId) == -1)
                 {
                     Vector2 delta = touch.delta;
-                    using (GenericPool<InvertVector2Processor>.Get(out var invertProcessor))
-                    {
-                        invertProcessor.invertX = invertX;
-                        invertProcessor.invertY = invertY;
-                        delta = invertProcessor.Process(delta, null);
-                    }
-                    using (GenericPool<ScaleVector2Processor>.Get(out var scaleProcessor))
-                    {
-                        scaleProcessor.x = scaleX;
-                        scaleProcessor.y = scaleY;
-                        delta = scaleProcessor.Process(delta, null);
-                    }
+                    delta = invertProcessor.Process(delta, null);
+                    delta = scaleProcessor.Process(delta, null);
                     base.OnActionTriggered(new CallbackContext(Look, InputActionPhase.Performed, delta));
                     break;
                 }
