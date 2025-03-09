@@ -16,10 +16,5 @@
       "description": "This is a sample that does not use the UI.",
       "path": "Samples~/Template_without_UI"
     }
-  ],
-  "dependencies": {
-    "com.unity.tiny.character.controller": "",
-    "com.unity.inputsystem": "",
-    "com.unity.ugui": ""
-  }
+  ]
 }
