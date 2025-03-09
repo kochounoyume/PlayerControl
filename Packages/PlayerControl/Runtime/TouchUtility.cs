@@ -7,7 +7,7 @@ namespace PlayerControl
     public static class TouchUtility
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Touch GetApproximatelyActiveTouch(Vector2 screenPoint)
+        public static Touch GetApproximatelyActiveTouch(in Vector2 screenPoint)
         {
             Touch result = default;
             float minSqrDistance = float.MaxValue;
@@ -28,7 +28,7 @@ namespace PlayerControl
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool TryGetApproximatelyActiveTouch(Vector2 screenPoint, out Touch touch)
+        public static bool TryGetApproximatelyActiveTouch(in Vector2 screenPoint, out Touch touch)
         {
             touch = GetApproximatelyActiveTouch(screenPoint);
             return !touch.Equals(default);

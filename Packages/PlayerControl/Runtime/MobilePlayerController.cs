@@ -79,31 +79,27 @@ namespace PlayerControl
                 _ => ReadOnlySpan<int>.Empty
             };
             if (activeTouches.Count <= avoidTouchIds.Length) return;
-            Touch activeTouch = default;
             foreach (Touch touch in activeTouches)
             {
                 if (avoidTouchIds.IndexOf(touch.touchId) == -1)
                 {
-                    activeTouch = touch;
+                    Vector2 delta = touch.delta;
+                    using (GenericPool<InvertVector2Processor>.Get(out var invertProcessor))
+                    {
+                        invertProcessor.invertX = invertX;
+                        invertProcessor.invertY = invertY;
+                        delta = invertProcessor.Process(delta, null);
+                    }
+                    using (GenericPool<ScaleVector2Processor>.Get(out var scaleProcessor))
+                    {
+                        scaleProcessor.x = scaleX;
+                        scaleProcessor.y = scaleY;
+                        delta = scaleProcessor.Process(delta, null);
+                    }
+                    base.OnActionTriggered(new CallbackContext(Look, InputActionPhase.Performed, delta));
                     break;
                 }
             }
-            if (activeTouch.Equals(default)) return;
-
-            Vector2 delta = activeTouch.delta;
-            using (GenericPool<InvertVector2Processor>.Get(out var invertProcessor))
-            {
-                invertProcessor.invertX = invertX;
-                invertProcessor.invertY = invertY;
-                delta = invertProcessor.Process(delta, null);
-            }
-            using (GenericPool<ScaleVector2Processor>.Get(out var scaleProcessor))
-            {
-                scaleProcessor.x = scaleX;
-                scaleProcessor.y = scaleY;
-                delta = scaleProcessor.Process(delta, null);
-            }
-            base.OnActionTriggered(new CallbackContext(Look, InputActionPhase.Performed, delta));
         }
 
         protected override void OnActionTriggered(in CallbackContext context)
