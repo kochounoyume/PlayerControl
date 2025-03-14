@@ -9,8 +9,7 @@ namespace PlayerControl
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Touch GetApproximatelyActiveTouch(in Vector2 screenPoint)
         {
-            Touch result = default;
-            float minSqrDistance = float.MaxValue;
+            (Touch result, float minSqrDistance) = (default, float.MaxValue);
 
             foreach (Touch touch in Touch.activeTouches)
             {
