@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> The project was to be actively maintained in the forked [AndanteTribe/PlayerControl](https://github.com/AndanteTribe/PlayerControl), please use it.
+
 # PlayerControl
 PlayerControl is the most minimalist mobile character control using Project_TCC.
 It provides a template for standard uGUI-based character controls, such as joysticks and buttons.
